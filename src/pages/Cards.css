@@ -1,0 +1,217 @@
+.cards-page{
+background:#f4f6f9;
+min-height:100vh;
+padding:20px;
+}
+
+/* header */
+
+.cards-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.cards-header button{
+border:none;
+background:none;
+font-size:22px;
+cursor:pointer;
+}
+
+/* card */
+
+.card-visual{
+height:200px;
+background:linear-gradient(135deg,#0a3d62,#082f49);
+border-radius:18px;
+color:white;
+padding:22px;
+margin-bottom:20px;
+box-shadow:0 12px 25px rgba(0,0,0,0.2);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+position:relative;
+.card-visual{
+font-family: 'Courier New', monospace;
+}
+}
+
+.card-bank{
+font-size:18px;
+font-weight:700;
+}
+
+.card-chip{
+width:45px;
+height:32px;
+background:gold;
+border-radius:6px;
+margin-top:20px;
+}
+
+.card-number{
+font-size:20px;
+letter-spacing:3px;
+margin-top:15px;
+font-weight:500;
+}
+
+.card-bottom{
+display:flex;
+justify-content:space-between;
+align-items:flex-end;
+margin-top:10px;
+gap:20px;
+}
+
+.card-bottom span{
+font-size:10px;
+opacity:.7;
+display:block;
+margin-bottom:2px;
+}
+
+.card-bottom p{
+margin:0;
+font-weight:600;
+font-size:14px;
+white-space:nowrap;
+}
+
+/* status */
+
+.card-status{
+font-weight:600;
+margin-bottom:20px;
+}
+
+.active{
+color:#16a34a;
+}
+
+.frozen{
+color:#dc2626;
+}
+
+/* actions */
+
+.card-actions{
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-bottom:20px;
+}
+
+.card-actions button{
+background:white;
+border:none;
+padding:14px;
+border-radius:12px;
+text-align:left;
+font-weight:600;
+cursor:pointer;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+.card-actions button:hover{
+background:#0a3d62;
+color:white;
+}
+
+/* limit */
+
+.limit-section{
+background:white;
+padding:18px;
+border-radius:14px;
+margin-bottom:20px;
+}
+
+.limit-section input{
+width:100%;
+}
+
+/* virtual card */
+
+.virtual-card{
+background:white;
+padding:18px;
+border-radius:14px;
+margin-bottom:20px;
+}
+
+.virtual-card button{
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#0a3d62;
+color:white;
+cursor:pointer;
+}
+
+/* wallet */
+
+.wallet-section{
+background:white;
+padding:18px;
+border-radius:14px;
+}
+
+.wallet-section button{
+display:block;
+width:100%;
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#0a3d62;
+color:white;
+cursor:pointer;
+}
+
+/* PIN modal */
+
+.pin-overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.pin-modal{
+background:white;
+padding:25px;
+border-radius:14px;
+text-align:center;
+}
+
+.pin-keypad{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-top:15px;
+}
+
+.pin-keypad button{
+padding:12px;
+font-size:16px;
+}
+.card-network {
+position:absolute;
+top:20px;
+right:20px;
+}
+
+.card-network img{
+width:60px;
+filter:brightness(0) invert(1);
+}

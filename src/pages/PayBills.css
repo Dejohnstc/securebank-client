@@ -1,0 +1,40 @@
+.bills-container {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.bills-container h2 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.bills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.bill-card {
+  background: white;
+  padding: 18px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.bill-card:hover {
+  transform: translateY(-3px);
+}
+
+.bill-icon {
+  font-size: 28px;
+}
+
+.bill-name {
+  margin-top: 8px;
+  font-weight: 600;
+}

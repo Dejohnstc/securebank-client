@@ -1,0 +1,172 @@
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a3d62, #1e5799);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 20px;
+}
+
+.login-card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.login-brand {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-box {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 10px auto;
+  background: #0a3d62;
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.login-brand h2 {
+  margin: 0;
+  font-weight: 700;
+  color: #0a3d62;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0a3d62;
+  box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.15);
+}
+
+.login-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 50px;
+  background: #0a3d62;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #082f49;
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-footer span {
+  color: #0a3d62;
+  font-weight: 600;
+  cursor: pointer;
+}
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .dashboard {
+    padding: 16px;
+  }
+
+  .account-card {
+    padding: 18px;
+  }
+
+  .balance {
+    font-size: 26px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .summary {
+    padding: 16px;
+  }
+
+  .summary-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .amount {
+    align-self: flex-end;
+  }
+
+}
+.register-link{
+border:none;
+background:none;
+color:#0a3d62;
+font-weight:600;
+margin-left:6px;
+cursor:pointer;
+}
+
+.register-link:hover{
+text-decoration:underline;
+}

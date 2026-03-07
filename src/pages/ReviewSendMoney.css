@@ -1,0 +1,96 @@
+.zelle-review {
+  min-height: 100vh;
+  background: #f4f6f9;
+  padding: 20px;
+}
+
+.zelle-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.zelle-header button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.zelle-header h2 {
+  font-weight: 700;
+  color: #1c1f26;
+}
+
+.review-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.review-recipient {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.zelle-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #6c2bd9, #8e2de2);
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.review-recipient h3 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.review-recipient p {
+  margin: 2px 0 0 0;
+  color: #666;
+}
+
+.review-amount {
+  font-size: 36px;
+  font-weight: 700;
+  color: #6c2bd9;
+  margin: 25px 0;
+}
+
+.review-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
+}
+
+.review-info strong {
+  font-size: 16px;
+}
+
+.confirm-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #6c2bd9, #8e2de2);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(108, 43, 217, 0.3);
+  transition: 0.3s;
+}
+
+.confirm-btn:hover {
+  opacity: 0.9;
+}

@@ -1,0 +1,286 @@
+.send-container {
+  padding: 20px;
+  background: #f4f6f9;
+  min-height: 100vh;
+}
+
+.send-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.send-header button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.section {
+  margin-bottom: 25px;
+}
+
+.section h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  color: #1e293b;
+}
+
+.option span {
+  font-size: 13px;
+  color: #475569;
+}
+.option.active {
+  border: 2px solid #0a3d62;
+  background: #eaf3ff;
+  color: #0a3d62;
+}
+
+.option.active span {
+  color: #1e293b;
+}
+
+.account-box {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background: white;
+  color: #1e293b;
+}
+
+input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+.send-btn {
+  width: 100%;
+  padding: 15px;
+  background: #0a3d62;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.review-box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.review-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.success-box {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-top: 100px;
+}
+.section h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #1e293b;
+  font-weight: 600;
+}
+.input-error {
+  border: 1px solid #dc2626;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 5px;
+}
+.review-container {
+  min-height: 100vh;
+  background: #f4f6f9;
+  padding: 20px;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.review-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.review-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.review-section {
+  margin-bottom: 18px;
+}
+
+.review-section h4 {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.review-main {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.review-sub {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.review-total {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  margin-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.review-notice {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 15px;
+}
+
+.confirm-btnn {
+  width: 100%;
+  margin-top: 20px;
+  height: 50px;
+  border-radius: 50px;
+  border: none;
+  background: #0a3d62;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(10, 61, 98, 0.35);
+}
+.edit-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #0a3d62;
+  cursor: pointer;
+}
+
+.pin-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.pin-modal {
+  background: white;
+  padding: 24px;
+  border-radius: 18px;
+  width: 320px;
+  text-align: center;
+}
+
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+  font-size: 24px;
+}
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.pin-keypad button {
+  height: 45px;
+  border-radius: 10px;
+  border: none;
+  background: #f1f5f9;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+.pin-keypad button:active {
+  background: #e2e8f0;
+}
+.detected-name {
+  margin-top: 10px;
+  padding: 10px;
+  background: #e0f2fe;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0a3d62;
+}
