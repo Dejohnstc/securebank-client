@@ -8,9 +8,10 @@ function ReviewTransfer() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [loading, setLoading] = useState(false);
+  
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState("");
+  const [processing,setProcessing] = useState(false); // FIXED
 
   const state = location.state;
 
@@ -47,43 +48,73 @@ function ReviewTransfer() {
       ? "Within minutes"
       : "1–2 business days";
 
-  const handleConfirm = async () => {
 
-    if (pin !== "070362") {
-      alert("Incorrect PIN");
-      setPin("");
-      return;
-    }
+/* CONFIRM TRANSFER */
 
-    try {
+const handleConfirm = async () => {
 
-      setLoading(true);
+if(pin !== "070362"){
+alert("Incorrect PIN");
+setPin("");
+return;
+}
 
-      await api.post("/api/transactions/transfer", {
-        accountNumber: recipientAccount,
-        amount: numericAmount,
-      });
+try{
 
-      navigate("/success", {
-        state: {
-          name: recipientName,
-          amount: numericAmount,
-          reference
-        }
-      });
+setShowPinModal(false);
+setProcessing(true);
 
-    } catch (error) {
+await api.post("/api/transactions/transfer",{
+accountNumber: recipientAccount,
+amount: numericAmount
+});
 
-      alert(error.response?.data?.message || "Transfer failed");
+setTimeout(()=>{
 
-    } finally {
+navigate("/success",{
+state:{
+name: recipientName,
+amount:numericAmount,
+reference
+}
+});
 
-      setLoading(false);
-      setShowPinModal(false);
+},2000);
 
-    }
+}catch(error){
 
-  };
+alert(error.response?.data?.message || "Transfer failed");
+
+}finally{
+
+setProcessing(false);
+
+}
+
+};
+
+
+/* PROCESSING SCREEN */
+
+if(processing){
+return(
+
+<div className="processing-page">
+
+<div className="processing-card">
+
+<div className="loader-circle"></div>
+
+<h3>Your transfer is processing</h3>
+
+<p>Please wait while we complete your transaction.</p>
+
+</div>
+
+</div>
+
+);
+}
 
   return (
 
@@ -171,6 +202,7 @@ function ReviewTransfer() {
         Confirm Transfer
       </button>
 
+
       {/* PIN MODAL */}
 
       {showPinModal && (
@@ -200,9 +232,7 @@ function ReviewTransfer() {
                 </button>
               ))}
 
-              <button
-                onClick={() => setPin(pin.slice(0,-1))}
-              >
+              <button onClick={() => setPin(pin.slice(0,-1))}>
                 ⌫
               </button>
 
@@ -216,7 +246,7 @@ function ReviewTransfer() {
 
               <button
                 onClick={handleConfirm}
-                disabled={pin.length !== 6 || loading}
+                disabled={pin.length !== 6}
               >
                 OK
               </button>

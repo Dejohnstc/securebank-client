@@ -49,7 +49,8 @@ function Dashboard() {
     <div className="dashboard">
 
       {/* HEADER */}
-      <div className="header">
+      
+      <div className="top-navbar">
         <div className="greeting">
           {greetingText} {user.name}
         </div>

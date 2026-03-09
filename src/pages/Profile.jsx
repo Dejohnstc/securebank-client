@@ -37,11 +37,9 @@ const res = await api.get("/api/user/profile");
 
 setUser(res.data);
 
-/* LOAD PHOTO FOR THIS USER */
+/* LOAD SAVED PHOTO */
 
-const savedPhoto = localStorage.getItem(
-`profilePhoto_${res.data._id}`
-);
+const savedPhoto = localStorage.getItem(`profilePhoto_${res.data._id}`);
 
 if(savedPhoto){
 setPhoto(savedPhoto);
@@ -63,6 +61,7 @@ loadProfile();
 },[navigate]);
 
 
+
 /* PHOTO UPLOAD */
 
 const handlePhoto = (e)=>{
@@ -72,15 +71,17 @@ if(!file || !user) return;
 
 const reader = new FileReader();
 
-reader.onload = ()=>{
+reader.onloadend = ()=>{
 
-setPhoto(reader.result);
+const imageData = reader.result;
+
+setPhoto(imageData);
 
 /* SAVE PHOTO PER USER */
 
 localStorage.setItem(
 `profilePhoto_${user._id}`,
-reader.result
+imageData
 );
 
 };
@@ -88,6 +89,7 @@ reader.result
 reader.readAsDataURL(file);
 
 };
+
 
 
 /* DELETE PHOTO */
@@ -101,6 +103,7 @@ setPhoto(null);
 localStorage.removeItem(`profilePhoto_${user._id}`);
 
 };
+
 
 
 /* CHANGE PASSWORD */
@@ -132,6 +135,7 @@ alert("Password update failed");
 };
 
 
+
 /* TOGGLE FACE ID */
 
 const toggleFaceId = ()=>{
@@ -142,6 +146,7 @@ setFaceIdEnabled(state);
 localStorage.setItem("faceId",state);
 
 };
+
 
 
 /* TOGGLE NOTIFICATIONS */
@@ -156,7 +161,9 @@ setNotifications(prev=>({
 };
 
 
+
 if(!user) return <Loader message="Loading profile..." />;
+
 
 
 return(
@@ -217,6 +224,7 @@ Delete
 
 </div>
 
+
 <div className="profile-info">
 
 <div className="profile-row">
@@ -259,6 +267,7 @@ maximumFractionDigits:2
 </div>
 
 
+
 {/* ACCOUNT INFORMATION */}
 
 <div className="profile-section">
@@ -281,6 +290,7 @@ maximumFractionDigits:2
 </div>
 
 </div>
+
 
 
 {/* SECURITY */}
@@ -325,6 +335,7 @@ View Device Login History
 </div>
 
 
+
 {/* LOGIN ACTIVITY */}
 
 <div className="profile-section">
@@ -351,6 +362,7 @@ View Device Login History
 </div>
 
 </div>
+
 
 
 {/* NOTIFICATIONS */}
@@ -398,6 +410,7 @@ onChange={()=>toggleNotification("deposits")}
 </div>
 
 
+
 {/* DOCUMENTS */}
 
 <div className="profile-section">
@@ -420,6 +433,7 @@ Account Verification Letter
 </div>
 
 
+
 {/* LOGOUT */}
 
 <button
@@ -433,6 +447,7 @@ navigate("/");
 >
 Logout
 </button>
+
 
 
 {/* PASSWORD MODAL */}

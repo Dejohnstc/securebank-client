@@ -170,3 +170,10 @@ cursor:pointer;
 .register-link:hover{
 text-decoration:underline;
 }
+.login-page{
+width:100%;
+max-width:420px;
+margin:auto;
+padding:20px;
+box-sizing:border-box;
+}
