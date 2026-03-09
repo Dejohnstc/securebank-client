@@ -1,3 +1,7 @@
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
 .zelle-wrapper {
   max-width: 430px;
   margin: 0 auto;
@@ -113,7 +117,7 @@
   border-radius: 16px;
   border: 1px solid #d1d5db;
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 16px;
   background: #ffffff;
   color: #0f172a;
 }
@@ -382,10 +386,4 @@ width:100%;
 max-width:100%;
 box-sizing:border-box;
 font-size:16px; /* prevents mobile zoom */
-}
-
-/* Prevent scaling */
-
-*{
-transform: none !important;
 }
