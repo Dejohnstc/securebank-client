@@ -72,7 +72,7 @@ function ZelleReview() {
 
       <div className="zelle-header">
         <button onClick={() => navigate(-1)}>← Back</button>
-        <h2>Review Payment</h2>
+        <h2 className="rev">Review Payment</h2>
       </div>
 
       <div className="zelle-review-card">

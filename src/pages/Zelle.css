@@ -345,3 +345,7 @@
 .zelle-confirm-btn:active {
   transform: scale(0.97);
 }
+.rev {
+  position: relative;
+  left: -15px;
+}
