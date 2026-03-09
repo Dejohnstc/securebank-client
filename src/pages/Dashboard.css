@@ -52,7 +52,7 @@ html, body {
   padding: 22px;
   border-radius: 20px;
   margin-bottom: 18px;
-  margin-top: 100px;
+  margin-top: 85px;
 }
 
 .account-header {
@@ -212,7 +212,7 @@ html, body {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #0f172a;
+  color: white;
 }
 
 .menu-item:hover {

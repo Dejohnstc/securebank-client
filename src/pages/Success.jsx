@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { jsPDF } from "jspdf";
 import "./Success.css";
 
 function Success(){
@@ -7,60 +6,147 @@ function Success(){
 const navigate = useNavigate();
 const location = useLocation();
 
-const { name, amount, reference } = location.state || {};
+const data = location.state || {};
 
-const downloadReceipt = () => {
+const name = data.name || "Recipient";
+const amount = data.amount || 0;
+const reference = data.reference || "TRX000000";
 
-const doc = new jsPDF();
-
-doc.setFontSize(18);
-doc.text("SecureBank Payment Receipt",20,20);
-
-doc.setFontSize(12);
-
-doc.text(`Reference: ${reference}`,20,40);
-doc.text(`Recipient: ${name}`,20,50);
-doc.text(`Amount: $${Number(amount).toLocaleString(undefined,{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-})}`,20,60);
-
-doc.text(`Date: ${new Date().toLocaleString()}`,20,70);
-
-doc.text("Status: Completed",20,80);
-
-doc.save(`receipt-${reference}.pdf`);
-
-};
+const today = new Date().toLocaleDateString();
 
 return(
 
-<div className="success-page">
+<div className="receipt-page">
 
-<div className="success-card">
+<div className="receipt-card">
 
-<h2>Transfer Successful</h2>
+<div className="receipt-header">
 
-<p className="success-reference">
-Reference: {reference}
+<h1>CHASE</h1>
+<p>Printed from Chase Personal Online</p>
+
+</div>
+
+
+<hr/>
+
+
+<div className="success-message">
+
+<h3>✔ We've scheduled your wire.</h3>
+<p>Please print and save this page for your records.</p>
+
+</div>
+
+
+<h4 className="section-title">Account details</h4>
+
+
+<div className="receipt-row">
+<span>Wire to</span>
+<strong>{name} (...0304)</strong>
+</div>
+
+<div className="receipt-row">
+<span>Wire from</span>
+<strong>TOTAL CHECKING (...2281)</strong>
+</div>
+
+<div className="receipt-row">
+<span>Wire status</span>
+<strong>In transit</strong>
+</div>
+
+<div className="receipt-row">
+<span>Transaction number</span>
+<strong>{reference}</strong>
+</div>
+
+
+<h4 className="section-title">Sender information</h4>
+
+
+<div className="receipt-row">
+<span>Sender</span>
+<strong>ALEX MARTINS</strong>
+</div>
+
+<div className="receipt-row">
+<span>Address</span>
+<strong>2311 Fountain View Dr Apt 5</strong>
+</div>
+
+<div className="receipt-row">
+<span>City</span>
+<strong>Houston, TX 77057</strong>
+</div>
+
+<div className="receipt-row">
+<span>Country</span>
+<strong>United States of America</strong>
+</div>
+
+
+<div className="receipt-row">
+<span>Wire tracking number</span>
+<strong>{reference}</strong>
+</div>
+
+<div className="receipt-row">
+<span>Wire date</span>
+<strong>{today}</strong>
+</div>
+
+<div className="receipt-row">
+<span>Exchange rate</span>
+<strong>JPMC rate $1.00 USD</strong>
+</div>
+
+
+<h4 className="section-title">Wire amount</h4>
+
+
+<div className="receipt-row">
+<span>Wire amount</span>
+<strong>${Number(amount).toFixed(2)}</strong>
+</div>
+
+<div className="receipt-row">
+<span>Amount debited</span>
+<strong>${Number(amount).toFixed(2)}</strong>
+</div>
+
+<div className="receipt-row">
+<span>Outgoing wire transfer fee</span>
+<strong>$5.00 USD</strong>
+</div>
+
+<div className="receipt-row">
+<span>Outgoing wire transfer tax</span>
+<strong>$0.00 USD</strong>
+</div>
+
+
+<hr/>
+
+
+<div className="receipt-total">
+
+<span>Total</span>
+<strong>${(Number(amount)+5).toFixed(2)} USD</strong>
+
+</div>
+
+
+<p className="receipt-note">
+Your account activity will show separate charges for wire amount and wire transfer fee.
 </p>
 
-<p>
-Sent to <strong>{name}</strong>
-</p>
 
-<h3>
-$
-{Number(amount).toLocaleString(undefined,{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-})}
-</h3>
+<div className="receipt-buttons">
 
-<div className="success-actions">
-
-<button onClick={downloadReceipt}>
-Download Receipt
+<button onClick={()=>window.print()}>
+Print Receipt
 </button>
 
 <button onClick={()=>navigate("/dashboard")}>
@@ -68,6 +154,7 @@ Back to Dashboard
 </button>
 
 </div>
+
 
 </div>
 
