@@ -22,8 +22,8 @@ return(
 
 <div className="receipt-header">
 
-<h1>CHASE</h1>
-<p>Printed from Chase Personal Online</p>
+<h1>SECUREBANK</h1>
+<p>Printed from SecureBank checking Online</p>
 
 </div>
 
@@ -99,7 +99,7 @@ return(
 
 <div className="receipt-row">
 <span>Exchange rate</span>
-<strong>JPMC rate $1.00 USD</strong>
+<strong>SCB rate $1.00 USD</strong>
 </div>
 
 

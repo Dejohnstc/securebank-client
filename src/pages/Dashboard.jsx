@@ -122,7 +122,7 @@ function Dashboard() {
       {/* ACCOUNT CARD */}
       <div className="account-card">
         <div className="account-header">
-          <span className="fonter">SECUREBANK CHECKING</span>
+          <span className="fonter">SECUREBANK <p className="cch"></p>CHECKING<p/></span>
           <span>•••• 8509</span>
         </div>
 
