@@ -12,12 +12,15 @@ function Dashboard() {
   const [hideBalance,setHideBalance] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    if (!token) {
-      navigate("/");
-      return;
-    }
+  window.scrollTo(0,0); // scroll page to top
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/");
+    return;
+  }
 
     const loadData = async () => {
       try {
