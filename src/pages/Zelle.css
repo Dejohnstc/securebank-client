@@ -345,4 +345,47 @@
 .zelle-confirm-btn:active {
   transform: scale(0.97);
 }
+/* Prevent page zoom issues */
 
+html, body {
+width: 100%;
+max-width: 100%;
+overflow-x: hidden;
+}
+
+/* Main Zelle page container */
+
+.zelle-page{
+width:100%;
+max-width:420px;
+margin:0 auto;
+padding:20px;
+box-sizing:border-box;
+}
+
+/* Cards and containers */
+
+.zelle-card,
+.zelle-container,
+.zelle-box{
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+}
+
+/* Inputs */
+
+.zelle-page input,
+.zelle-page select,
+.zelle-page button{
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+font-size:16px; /* prevents mobile zoom */
+}
+
+/* Prevent scaling */
+
+*{
+transform: none !important;
+}
