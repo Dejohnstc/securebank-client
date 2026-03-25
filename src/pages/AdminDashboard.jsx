@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+// ✅ BASE URL (VERY IMPORTANT)
+const API = "https://securebank-api-ixis.onrender.com";
+
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +16,7 @@ export default function AdminDashboard() {
     try {
       if (!token) return;
 
-      const res = await axios.get('/api/admin/users', {
+      const res = await axios.get(`${API}/api/admin/users`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -31,7 +34,7 @@ export default function AdminDashboard() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`/api/admin/users/${id}`, {
+      await axios.delete(`${API}/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -44,7 +47,7 @@ export default function AdminDashboard() {
   // ✅ SUSPEND USER
   const suspendUser = async (id) => {
     try {
-      await axios.put(`/api/admin/users/${id}/suspend`, {}, {
+      await axios.put(`${API}/api/admin/users/${id}/suspend`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -54,13 +57,13 @@ export default function AdminDashboard() {
     }
   };
 
-  // ✅ LOAD USERS (FIXED EFFECT)
+  // ✅ LOAD USERS
   useEffect(() => {
     const loadUsers = async () => {
       try {
         if (!token) return;
 
-        const res = await axios.get('/api/admin/users', {
+        const res = await axios.get(`${API}/api/admin/users`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -89,7 +92,7 @@ export default function AdminDashboard() {
         return;
       }
 
-      const res = await axios.get(`/api/admin/users/search?query=${value}`, {
+      const res = await axios.get(`${API}/api/admin/users/search?query=${value}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -101,7 +104,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // ✅ LOADING UI
   if (loading) {
     return <p style={{ padding: "20px" }}>Loading users...</p>;
   }
@@ -110,7 +112,6 @@ export default function AdminDashboard() {
     <div style={{ padding: "20px" }}>
       <h1>Admin Panel</h1>
 
-      {/* 🔍 SEARCH BAR */}
       <input
         type="text"
         placeholder="Search users..."
