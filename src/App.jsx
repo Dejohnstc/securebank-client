@@ -15,6 +15,7 @@ import ZelleReview from "./pages/ZelleReview";
 import ZelleSuccess from "./pages/ZelleSuccess";
 import ReviewTransfer from "./pages/ReviewTransfer";
 import Profile from "./pages/Profile";
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 
@@ -98,6 +99,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Transactions */}
         <Route
