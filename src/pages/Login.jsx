@@ -5,106 +5,106 @@ import "./Login.css";
 
 function Login() {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const [email,setEmail] = useState("");
-const [password,setPassword] = useState("");
-const [error,setError] = useState("");
-const [loading,setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-const handleLogin = async (e)=>{
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-e.preventDefault();
+    if (!email || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
 
-if(!email || !password){
-setError("Please enter your email and password.");
-return;
-}
+    try {
+      setLoading(true);
+      setError("");
 
-try{
+      const res = await api.post("/api/auth/login", { email, password });
 
-setLoading(true);
-setError("");
+      // ✅ SAVE TOKEN
+      localStorage.setItem("token", res.data.token);
 
-const res = await api.post("/api/auth/login",{email,password});
+      // ✅ SAVE USER (VERY IMPORTANT)
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-localStorage.setItem("token",res.data.token);
+      // ✅ ROLE-BASED REDIRECT
+      if (res.data.user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
 
-navigate("/dashboard");
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-}catch(err){
+  return (
 
-setError(err.response?.data?.message || "Invalid credentials.");
+    <div className="login-page">
 
-}finally{
+      <div className="login-card">
 
-setLoading(false);
+        <div className="login-brand">
+          <div className="logo-box">CB</div>
+          <h2>SecureBank</h2>
+        </div>
 
-}
+        <h3 className="login-title">Sign in to your account</h3>
 
-};
+        <form onSubmit={handleLogin}>
 
-return(
+          <div className="form-group">
+            <label>Email address</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-<div className="login-page">
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-<div className="login-card">
+          {error && <div className="login-error">{error}</div>}
 
-<div className="login-brand">
-<div className="logo-box">CB</div>
-<h2>SecureBank</h2>
-</div>
+          <button className="login-btn" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
 
-<h3 className="login-title">Sign in to your account</h3>
+        </form>
 
-<form onSubmit={handleLogin}>
+        <div className="login-footer">
+          <p>
+            Don’t have an account?
+            <button
+              className="register-link"
+              onClick={() => navigate("/register")}
+            >
+              Create one
+            </button>
+          </p>
+        </div>
 
-<div className="form-group">
-<label>Email address</label>
-<input
-type="email"
-placeholder="Enter your email"
-value={email}
-onChange={(e)=>setEmail(e.target.value)}
-/>
-</div>
+      </div>
 
-<div className="form-group">
-<label>Password</label>
-<input
-type="password"
-placeholder="Enter your password"
-value={password}
-onChange={(e)=>setPassword(e.target.value)}
-/>
-</div>
-
-{error && <div className="login-error">{error}</div>}
-
-<button className="login-btn" disabled={loading}>
-{loading ? "Signing in..." : "Sign In"}
-</button>
-
-</form>
-
-<div className="login-footer">
-<p>
-Don’t have an account?
-<button
-className="register-link"
-onClick={()=>navigate("/register")}
->
-Create one
-</button>
-</p>
-</div>
-
-</div>
-
-</div>
-
-);
-
+    </div>
+  );
 }
 
 export default Login;
