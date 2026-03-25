@@ -20,7 +20,7 @@ export default function AdminDashboard() {
 
       setUsers(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("FETCH ERROR:", err.response?.data || err.message);
     }
   };
 
@@ -32,22 +32,32 @@ export default function AdminDashboard() {
     load();
   }, []);
 
-  // 💰 UPDATE BALANCE
+  // 💰 UPDATE BALANCE (FIXED)
   const updateBalance = async (action) => {
     try {
-      if (!amount || !selectedUser) return;
+      if (amount === "" || selectedUser === null) {
+        alert("Enter amount first");
+        return;
+      }
 
       await axios.put(
         `${API}/api/admin/users/${selectedUser}/balance`,
-        { amount, action },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          amount: Number(amount), // ✅ FIXED
+          action
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
       );
 
       setAmount("");
       setSelectedUser(null);
       fetchUsers();
+
     } catch (err) {
-      console.error(err);
+      console.error("BALANCE ERROR:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Balance update failed");
     }
   };
 
@@ -55,20 +65,28 @@ export default function AdminDashboard() {
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user?")) return;
 
-    await axios.delete(`${API}/api/admin/users/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    try {
+      await axios.delete(`${API}/api/admin/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-    fetchUsers();
+      fetchUsers();
+    } catch (err) {
+      console.error("DELETE ERROR:", err.response?.data || err.message);
+    }
   };
 
   // 🚫 SUSPEND
   const suspendUser = async (id) => {
-    await axios.put(`${API}/api/admin/users/${id}/suspend`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    try {
+      await axios.put(`${API}/api/admin/users/${id}/suspend`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-    fetchUsers();
+      fetchUsers();
+    } catch (err) {
+      console.error("SUSPEND ERROR:", err.response?.data || err.message);
+    }
   };
 
   // 📊 STATS
