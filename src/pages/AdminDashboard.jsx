@@ -8,6 +8,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [amount, setAmount] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
+  const [deletingId, setDeletingId] = useState(null); // ✅ FIX
 
   const token = localStorage.getItem('token');
 
@@ -32,7 +33,7 @@ export default function AdminDashboard() {
     load();
   }, []);
 
-  // 💰 UPDATE BALANCE (FIXED)
+  // 💰 UPDATE BALANCE
   const updateBalance = async (action) => {
     try {
       if (amount === "" || selectedUser === null) {
@@ -43,7 +44,7 @@ export default function AdminDashboard() {
       await axios.put(
         `${API}/api/admin/users/${selectedUser}/balance`,
         {
-          amount: Number(amount), // ✅ FIXED
+          amount: Number(amount),
           action
         },
         {
@@ -61,18 +62,27 @@ export default function AdminDashboard() {
     }
   };
 
-  // ❌ DELETE
+  // ❌ SAFE DELETE (FIXED)
   const deleteUser = async (id) => {
-    if (!window.confirm("Delete this user?")) return;
+    if (deletingId) return; // 🚫 prevent multiple clicks
+
+    const confirmDelete = window.confirm("Delete this user?");
+    if (!confirmDelete) return;
 
     try {
+      setDeletingId(id);
+
       await axios.delete(`${API}/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       fetchUsers();
+
     } catch (err) {
       console.error("DELETE ERROR:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Delete failed");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -91,7 +101,7 @@ export default function AdminDashboard() {
 
   // 📊 STATS
   const totalUsers = users.length;
-  const totalBalance = users.reduce((sum, u) => sum + u.balance, 0);
+  const totalBalance = users.reduce((sum, u) => sum + (u.balance || 0), 0);
 
   if (loading) return <p style={{ padding: 20 }}>Loading...</p>;
 
@@ -114,20 +124,34 @@ export default function AdminDashboard() {
       </div>
 
       {/* 👥 USERS GRID */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+        gap: "20px"
+      }}>
         {users.map(user => (
           <div key={user._id} style={userCard}>
 
             <h3>{user.name}</h3>
             <p>{user.email}</p>
 
-            <p>Status: 
+            <p>Status:
               <span style={{ color: user.status === "active" ? "lime" : "red" }}>
                 {user.status}
               </span>
             </p>
 
-            <p>Balance: <strong>${user.balance}</strong></p>
+            <p>Balance: <strong>${user.balance || 0}</strong></p>
+
+            {/* 🗓️ REGISTRATION DATE */}
+            <p>
+              Registered:{" "}
+              <strong>
+                {user.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString()
+                  : "N/A"}
+              </strong>
+            </p>
 
             {/* 💰 BALANCE CONTROL */}
             <div style={{ marginTop: "10px" }}>
@@ -151,8 +175,25 @@ export default function AdminDashboard() {
 
             {/* ACTIONS */}
             <div style={{ marginTop: "15px" }}>
-              <button style={btnRed} onClick={() => deleteUser(user._id)}>Delete</button>
-              <button style={btnOrange} onClick={() => suspendUser(user._id)}>Suspend</button>
+
+              {/* ❌ DELETE (BLOCK ADMIN) */}
+              {user.role !== "admin" && (
+                <button
+                  style={btnRed}
+                  disabled={deletingId === user._id}
+                  onClick={() => deleteUser(user._id)}
+                >
+                  {deletingId === user._id ? "Deleting..." : "Delete"}
+                </button>
+              )}
+
+              <button
+                style={btnOrange}
+                onClick={() => suspendUser(user._id)}
+              >
+                Suspend
+              </button>
+
             </div>
 
           </div>
