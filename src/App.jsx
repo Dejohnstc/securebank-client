@@ -3,8 +3,7 @@ import Cards from "./pages/Cards";
 
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
-import SendMoney from "./pages/SendMoney";
-import ReviewSendMoney from "./pages/ReviewSendMoney";
+import SendMoney from "./pages/Sendmoney";
 import Success from "./pages/Success";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,6 +15,8 @@ import ZelleSuccess from "./pages/ZelleSuccess";
 import ReviewTransfer from "./pages/ReviewTransfer";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
+import TransferFailed from "./pages/TransferFailed";
+import TransferSuccess from "./pages/TransferSuccess";
 
 
 
@@ -100,6 +101,8 @@ function App() {
           }
         />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/transfer-success" element={<TransferSuccess />} />
+<Route path="/transfer-failed" element={<TransferFailed />} />
 
         {/* Transactions */}
         <Route

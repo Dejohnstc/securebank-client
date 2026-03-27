@@ -60,17 +60,17 @@ const handleConfirm = async () => {
 
   try{
 
-    setProcessing(true); // ✅ START LOADER FIRST
+    setProcessing(true);
 
     await api.post("/api/transactions/transfer",{
       accountNumber: recipientAccount,
       amount: numericAmount
     });
 
-    // ✅ REALISTIC BANK DELAY
+    // ✅ SUCCESS PAGE
     setTimeout(()=>{
 
-      navigate("/success",{
+      navigate("/transfer-success",{
         state:{
           name: recipientName,
           amount:numericAmount,
@@ -82,7 +82,12 @@ const handleConfirm = async () => {
 
   }catch(error){
 
-    alert(error.response?.data?.message || "Transfer failed");
+    // ❌ FAILED PAGE
+    navigate("/transfer-failed",{
+      state:{
+        message: error.response?.data?.message || "Transaction declined"
+      }
+    });
 
   }finally{
 
