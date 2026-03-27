@@ -8,10 +8,9 @@ function ReviewTransfer() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState("");
-  const [processing,setProcessing] = useState(false); // FIXED
+  const [processing,setProcessing] = useState(false);
 
   const state = location.state;
 
@@ -53,68 +52,67 @@ function ReviewTransfer() {
 
 const handleConfirm = async () => {
 
-if(pin !== "070362"){
-alert("Incorrect PIN");
-setPin("");
-return;
-}
+  if(pin !== "070362"){
+    alert("Incorrect PIN");
+    setPin("");
+    return;
+  }
 
-try{
+  try{
 
-setShowPinModal(false);
-setProcessing(true);
+    setProcessing(true); // ✅ START LOADER FIRST
 
-await api.post("/api/transactions/transfer",{
-accountNumber: recipientAccount,
-amount: numericAmount
-});
+    await api.post("/api/transactions/transfer",{
+      accountNumber: recipientAccount,
+      amount: numericAmount
+    });
 
-setTimeout(()=>{
+    // ✅ REALISTIC BANK DELAY
+    setTimeout(()=>{
 
-navigate("/success",{
-state:{
-name: recipientName,
-amount:numericAmount,
-reference
-}
-});
+      navigate("/success",{
+        state:{
+          name: recipientName,
+          amount:numericAmount,
+          reference
+        }
+      });
 
-},2000);
+    },2000);
 
-}catch(error){
+  }catch(error){
 
-alert(error.response?.data?.message || "Transfer failed");
+    alert(error.response?.data?.message || "Transfer failed");
 
-}finally{
+  }finally{
 
-setProcessing(false);
+    setProcessing(false);
 
-}
+  }
 
 };
 
 
 /* PROCESSING SCREEN */
 
-if(processing){
-return(
+if (processing) {
+  return(
+    <div className="processing-page">
+      <div className="processing-card">
 
-<div className="processing-page">
+        <div className="loader-circle"></div>
 
-<div className="processing-card">
+        <h3>Securing your transfer...</h3>
 
-<div className="loader-circle"></div>
+        <p>
+          Please wait while we safely process your transaction.
+        </p>
 
-<h3>Your transfer is processing</h3>
-
-<p>Please wait while we complete your transaction.</p>
-
-</div>
-
-</div>
-
-);
+      </div>
+    </div>
+  );
 }
+
 
   return (
 

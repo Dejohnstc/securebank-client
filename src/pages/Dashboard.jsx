@@ -76,51 +76,68 @@ function Dashboard() {
 
       {/* SIDE MENU */}
       <div className={`side-menu ${menuOpen ? "open" : ""}`}>
-        <button className="menu-item" onClick={() => navigate("/dashboard")}>
-          Dashboard
-        </button>
 
-        <button className="menu-item" onClick={() => navigate("/send-money")}>
-          Send Money
-        </button>
+  <button
+    className="menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/dashboard");
+    }}
+  >
+    Dashboard
+  </button>
 
-        <button
-          className="menu-item"
-          onClick={() => {
-            setMenuOpen(false);
-            navigate("/pay-bills");
-          }}
-        >
-          Pay Bills
-        </button>
+  <button
+    className="menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/send-money");
+    }}
+  >
+    Send Money
+  </button>
 
-        <button
-          className="menu-item"
-          onClick={() => {
-            setMenuOpen(false);
-            navigate("/zelle");
-          }}
-        >
-          Send with Zelle
-        </button>
+  <button
+    className="menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/pay-bills");
+    }}
+  >
+    Pay Bills
+  </button>
 
-        <button
-          className="menu-item"
-          onClick={() => navigate("/transactions")}
-        >
-          Transactions
-        </button>
+  <button
+    className="menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/zelle");
+    }}
+  >
+    Send with Zelle
+  </button>
 
-        <button
-          className="menu-item logout"
-          onClick={() => {
-            localStorage.removeItem("token");
-            navigate("/");
-          }}
-        >
-          Logout
-        </button>
-      </div>
+  <button
+    className="menu-item"
+    onClick={() => {
+      setMenuOpen(false);
+      navigate("/transactions");
+    }}
+  >
+    Transactions
+  </button>
+
+  <button
+    className="menu-item logout"
+    onClick={() => {
+      localStorage.removeItem("token");
+      navigate("/");
+    }}
+  >
+    Logout
+  </button>
+
+</div>
 
       {/* ACCOUNT CARD */}
       <div className="account-card">

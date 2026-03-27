@@ -35,32 +35,39 @@ export default function AdminDashboard() {
 
   // 💰 UPDATE BALANCE
   const updateBalance = async (action) => {
-    try {
-      if (amount === "" || selectedUser === null) {
-        alert("Enter amount first");
-        return;
-      }
-
-      await axios.put(
-        `${API}/api/admin/users/${selectedUser}/balance`,
-        {
-          amount: Number(amount),
-          action
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-
-      setAmount("");
-      setSelectedUser(null);
-      fetchUsers();
-
-    } catch (err) {
-      console.error("BALANCE ERROR:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Balance update failed");
+  try {
+    if (!selectedUser) {
+      alert("Select a user first");
+      return;
     }
-  };
+
+    if (amount === "" || isNaN(amount)) {
+      alert("Enter a valid number");
+      return;
+    }
+
+    const numericAmount = Number(amount);
+
+    await axios.put(
+      `${API}/api/admin/users/${selectedUser}/balance`,
+      {
+        amount: numericAmount,
+        action: action
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
+
+    setAmount("");
+    setSelectedUser(null);
+    fetchUsers();
+
+  } catch (err) {
+    console.error("BALANCE ERROR:", err.response?.data || err.message);
+    alert(err.response?.data?.message || "Balance update failed");
+  }
+};
 
   // ❌ SAFE DELETE (FIXED)
   const deleteUser = async (id) => {
@@ -155,16 +162,16 @@ export default function AdminDashboard() {
 
             {/* 💰 BALANCE CONTROL */}
             <div style={{ marginTop: "10px" }}>
-              <input
-                type="number"
-                placeholder="Amount"
-                value={selectedUser === user._id ? amount : ""}
-                onChange={(e) => {
-                  setSelectedUser(user._id);
-                  setAmount(e.target.value);
-                }}
-                style={inputStyle}
-              />
+             <input
+  type="number"
+  placeholder="Amount"
+  value={selectedUser === user._id ? amount : ""}
+  onChange={(e) => {
+    setSelectedUser(user._id);
+    setAmount(e.target.value.replace(/[^0-9.]/g, "")); // ✅ CLEAN INPUT
+  }}
+  style={inputStyle}
+/>
 
               <div style={{ marginTop: "5px" }}>
                 <button style={btnGreen} onClick={() => updateBalance("add")}>➕</button>
