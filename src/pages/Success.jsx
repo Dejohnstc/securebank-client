@@ -18,7 +18,7 @@ return(
 
 <div className="receipt-page">
 
-<div className="receipt-card">
+<div className="receipt-card" id="print-area">
 
 <div className="receipt-header">
 
@@ -27,9 +27,7 @@ return(
 
 </div>
 
-
 <hr/>
-
 
 <div className="success-message">
 
@@ -38,9 +36,7 @@ return(
 
 </div>
 
-
 <h4 className="section-title">Account details</h4>
-
 
 <div className="receipt-row">
 <span>Wire to</span>
@@ -62,9 +58,7 @@ return(
 <strong>{reference}</strong>
 </div>
 
-
 <h4 className="section-title">Sender information</h4>
-
 
 <div className="receipt-row">
 <span>Sender</span>
@@ -86,7 +80,6 @@ return(
 <strong>United States of America</strong>
 </div>
 
-
 <div className="receipt-row">
 <span>Wire tracking number</span>
 <strong>{reference}</strong>
@@ -102,9 +95,7 @@ return(
 <strong>SCB rate $1.00 USD</strong>
 </div>
 
-
 <h4 className="section-title">Wire amount</h4>
-
 
 <div className="receipt-row">
 <span>Wire amount</span>
@@ -126,24 +117,21 @@ return(
 <strong>$0.00 USD</strong>
 </div>
 
-
 <hr/>
 
-
 <div className="receipt-total">
-
 <span>Total</span>
 <strong>${(Number(amount)+5).toFixed(2)} USD</strong>
-
 </div>
-
 
 <p className="receipt-note">
 Your account activity will show separate charges for wire amount and wire transfer fee.
 </p>
 
+</div>
 
-<div className="receipt-buttons">
+{/* 🔥 BUTTONS OUTSIDE PRINT AREA */}
+<div className="receipt-buttons no-print">
 
 <button onClick={()=>window.print()}>
 Print Receipt
@@ -152,9 +140,6 @@ Print Receipt
 <button onClick={()=>navigate("/dashboard")}>
 Back to Dashboard
 </button>
-
-</div>
-
 
 </div>
 

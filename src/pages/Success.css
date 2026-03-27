@@ -65,3 +65,25 @@ color:white;
 cursor:pointer;
 border-radius:6px;
 }
+/* 🔥 PRINT CLEANUP */
+@media print {
+
+  body {
+    background: white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .receipt-page {
+    padding: 0;
+  }
+
+  .receipt-card {
+    box-shadow: none;
+    border: none;
+    width: 100%;
+  }
+
+}
