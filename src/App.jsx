@@ -3,7 +3,7 @@ import Cards from "./pages/Cards";
 
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
-import SendMoney from "./pages/Sendmoney";
+import SendMoney from "./pages/SendMoney";
 import Success from "./pages/Success";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
