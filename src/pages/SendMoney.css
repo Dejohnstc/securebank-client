@@ -411,3 +411,60 @@ input:focus {
 .loader-circle {
   border-top: 5px solid #0a3d62;
 }
+/* 🔥 RECENT SECTION */
+.recent-section {
+  margin-bottom: 20px;
+}
+
+.recent-section h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* LIST */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ITEM */
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.recent-item:hover {
+  transform: scale(1.02);
+}
+
+/* AVATAR */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #0a3d62;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+/* RED INPUT */
+.input-error {
+  border: 1px solid #dc2626 !important;
+}
+
+/* ERROR TEXT */
+.error-text {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
