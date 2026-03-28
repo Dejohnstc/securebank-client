@@ -35,12 +35,12 @@ function TransferSuccess(){
 
         <div className="success-details">
           <div>
-            <span>Reference</span>
+            <span>Reference: </span>
             <strong>{reference}</strong>
           </div>
 
           <div>
-            <span>Status</span>
+            <span>Status: </span>
             <strong className="success-status">Completed</strong>
           </div>
         </div>

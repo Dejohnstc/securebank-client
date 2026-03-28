@@ -75,3 +75,29 @@
   padding: 12px;
   border-radius: 8px;
 }
+/* BUTTON FIX */
+.success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.primary-btn {
+  background: #0f172a;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.secondary-btn {
+  background: #f1f5f9;
+  border: 1px solid #ddd;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 150px;
+}

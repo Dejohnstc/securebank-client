@@ -67,12 +67,12 @@ return(
 
 <div className="receipt-row">
 <span>Address</span>
-<strong>2311 Fountain View Dr Apt 5</strong>
+<strong>3825 Scott St 304,</strong>
 </div>
 
 <div className="receipt-row">
 <span>City</span>
-<strong>Houston, TX 77057</strong>
+<strong>San Francisco, CA 94123</strong>
 </div>
 
 <div className="receipt-row">

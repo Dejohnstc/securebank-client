@@ -1,89 +1,104 @@
-.receipt-page{
-background:#f5f5f5;
-padding:40px;
-display:flex;
-justify-content:center;
+.receipt-page {
+  background: #f5f5f5;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
 }
 
-.receipt-card{
-background:white;
-width:650px;
-padding:40px;
-box-shadow:0 10px 30px rgba(0,0,0,0.1);
-font-family:Arial, Helvetica, sans-serif;
+.receipt-card {
+  background: #fff;
+  width: 100%;
+  max-width: 750px;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
 }
 
-.receipt-header{
-text-align:center;
+/* HEADER */
+.receipt-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.receipt-header h1{
-letter-spacing:4px;
+.receipt-header h1 {
+  letter-spacing: 4px;
+  font-weight: bold;
 }
 
-.success-message{
-margin:20px 0;
+.success-message {
+  margin: 25px 0;
 }
 
-.section-title{
-margin-top:30px;
-border-bottom:1px solid #ccc;
-padding-bottom:6px;
+/* SECTION */
+.section-title {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
-.receipt-row{
-display:flex;
-justify-content:space-between;
-margin:8px 0;
+/* ROW SPACING FIX */
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.receipt-total{
-display:flex;
-justify-content:space-between;
-font-size:18px;
-font-weight:bold;
-margin-top:10px;
+/* TOTAL */
+.receipt-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  margin-top: 20px;
+  font-weight: bold;
 }
 
-.receipt-note{
-font-size:12px;
-color:#666;
-margin-top:10px;
+/* NOTE */
+.receipt-note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #666;
 }
 
-.receipt-buttons{
-display:flex;
-gap:15px;
-margin-top:30px;
+/* ✅ BUTTON FIX (BOTTOM CENTERED) */
+.receipt-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
-.receipt-buttons button{
-padding:10px 18px;
-border:none;
-background:#0a6cff;
-color:white;
-cursor:pointer;
-border-radius:6px;
+.receipt-buttons button {
+  padding: 12px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  min-width: 160px;
 }
-/* 🔥 PRINT CLEANUP */
+
+.receipt-buttons button:first-child {
+  background: #0f172a;
+  color: white;
+}
+
+.receipt-buttons button:last-child {
+  background: #e5e7eb;
+}
+
+/* 🖨️ PRINT FIX */
 @media print {
 
   body {
     background: white;
   }
 
-  .no-print {
-    display: none !important;
-  }
-
-  .receipt-page {
-    padding: 0;
+  .receipt-buttons {
+    display: none;
   }
 
   .receipt-card {
     box-shadow: none;
-    border: none;
-    width: 100%;
+    border-radius: 0;
   }
 
 }
