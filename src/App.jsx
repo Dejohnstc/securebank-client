@@ -8,6 +8,7 @@ import Success from "./pages/Success";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLimits from "./pages/AdminLimits";
 import Zelle from "./pages/Zelle";
 import PayBills from "./pages/PayBills";
 import ZelleReview from "./pages/ZelleReview";
@@ -103,6 +104,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/transfer-success" element={<TransferSuccess />} />
 <Route path="/transfer-failed" element={<TransferFailed />} />
+<Route path="/admin/limits" element={<AdminLimits />} />
 
         {/* Transactions */}
         <Route

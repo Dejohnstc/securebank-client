@@ -1,0 +1,51 @@
+.limits-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.limits-card {
+  background: white;
+  padding: 40px;
+  border-radius: 14px;
+  width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.limits-card h2 {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.limits-group {
+  margin-bottom: 20px;
+}
+
+.limits-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.limits-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: #020617;
+}

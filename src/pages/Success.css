@@ -5,11 +5,12 @@
   justify-content: center;
 }
 
+/* 🔥 IMPROVED SPACING */
 .receipt-card {
   background: #fff;
   width: 100%;
   max-width: 750px;
-  padding: 40px;
+  padding: 50px 60px; /* ✅ FIXED spacing */
   border-radius: 10px;
   box-shadow: 0 5px 25px rgba(0,0,0,0.1);
 }
@@ -17,7 +18,7 @@
 /* HEADER */
 .receipt-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .receipt-header h1 {
@@ -26,21 +27,21 @@
 }
 
 .success-message {
-  margin: 25px 0;
+  margin: 30px 0;
 }
 
 /* SECTION */
 .section-title {
-  margin-top: 30px;
-  margin-bottom: 10px;
+  margin-top: 35px;
+  margin-bottom: 12px;
   font-weight: bold;
 }
 
-/* ROW SPACING FIX */
+/* 🔥 BETTER ROW SPACING */
 .receipt-row {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 12px 0; /* ✅ increased spacing */
   border-bottom: 1px solid #eee;
 }
 
@@ -49,56 +50,76 @@
   display: flex;
   justify-content: space-between;
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 25px;
   font-weight: bold;
 }
 
 /* NOTE */
 .receipt-note {
-  margin-top: 20px;
+  margin-top: 25px;
   font-size: 13px;
   color: #666;
 }
 
-/* ✅ BUTTON FIX (BOTTOM CENTERED) */
+/* 🔥 BUTTON FIX (CENTERED + CLEAN) */
 .receipt-buttons {
-  margin-top: 30px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 15px;
+  flex-wrap: wrap; /* ✅ prevents overflow issues */
 }
 
+/* BUTTON STYLE */
 .receipt-buttons button {
-  padding: 12px 18px;
+  padding: 12px 20px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  min-width: 160px;
+  min-width: 180px;
+  font-weight: 500;
+  transition: 0.2s ease;
 }
 
+/* PRIMARY BUTTON */
 .receipt-buttons button:first-child {
   background: #0f172a;
   color: white;
 }
 
+.receipt-buttons button:first-child:hover {
+  background: #020617;
+}
+
+/* SECONDARY BUTTON */
 .receipt-buttons button:last-child {
   background: #e5e7eb;
 }
 
-/* 🖨️ PRINT FIX */
+.receipt-buttons button:last-child:hover {
+  background: #d1d5db;
+}
+
+/* ✅ ENSURE PRINT HIDES BUTTONS */
 @media print {
 
   body {
     background: white;
   }
 
-  .receipt-buttons {
-    display: none;
+  .no-print {
+    display: none !important;
   }
 
   .receipt-card {
     box-shadow: none;
     border-radius: 0;
+    padding: 20px;
   }
+  .receipt-buttons {
+  margin-top: 20px; /* extra spacing from card */
+}
 
 }
+
