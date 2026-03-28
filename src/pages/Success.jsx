@@ -129,7 +129,6 @@ Your account activity will show separate charges for wire amount and wire transf
 </p>
 
 </div>
-<br/>
 {/* 🔥 BUTTONS OUTSIDE PRINT AREA */}
 <div className="receipt-buttons no-print">
 
