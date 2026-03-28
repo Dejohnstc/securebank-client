@@ -314,3 +314,100 @@ margin:0 auto 20px;
 0%{transform:rotate(0deg)}
 100%{transform:rotate(360deg)}
 }
+/* =========================
+   🔥 PREMIUM UI UPGRADE
+========================= */
+
+/* 🔥 SECTION CARD */
+.section {
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+/* 🔥 INPUT ENHANCED */
+input {
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  border-color: #0a3d62;
+  box-shadow: 0 0 0 2px rgba(10,61,98,0.15);
+}
+
+/* 🔥 DETECTED NAME (MORE BANK-LIKE) */
+.detected-name {
+  background: #ecfdf5;
+  border: 1px solid #d1fae5;
+  color: #065f46;
+  font-weight: 500;
+}
+
+/* 🔥 TRANSFER OPTION UPGRADE */
+.option {
+  transition: all 0.2s ease;
+}
+
+.option:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.option.active {
+  background: #0a3d62;
+  color: white;
+  border: none;
+}
+
+.option.active span {
+  color: #cbd5f5;
+}
+
+/* 🔥 BUTTON (REAL APP STYLE) */
+.send-btn {
+  position: sticky;
+  bottom: 20px;
+  box-shadow: 0 8px 20px rgba(10,61,98,0.25);
+  transition: all 0.2s ease;
+}
+
+.send-btn:hover {
+  background: #062b45;
+}
+
+/* 🔥 HEADER CLEAN */
+.send-header {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* 🔥 REVIEW CARD MORE PREMIUM */
+.review-card {
+  border-radius: 20px;
+}
+
+/* 🔥 PIN MODAL IMPROVEMENT */
+.pin-modal {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* 🔥 KEYPAD FEEDBACK */
+.pin-keypad button {
+  transition: 0.15s ease;
+}
+
+.pin-keypad button:hover {
+  background: #e2e8f0;
+}
+
+/* 🔥 PROCESSING CARD SMOOTHER */
+.processing-card {
+  border-radius: 16px;
+}
+
+/* 🔥 LOADER SMOOTH */
+.loader-circle {
+  border-top: 5px solid #0a3d62;
+}

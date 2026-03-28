@@ -12,6 +12,15 @@ function Transactions() {
   const [user,setUser] = useState(null);
   const [error,setError] = useState("");
 
+  // FILTERS
+  const [category,setCategory] = useState("all");
+  const [status,setStatus] = useState("all");
+  const [startDate,setStartDate] = useState("");
+  const [endDate,setEndDate] = useState("");
+
+  // SEARCH
+  const [search,setSearch] = useState("");
+
   useEffect(()=>{
 
     const token = localStorage.getItem("token");
@@ -34,7 +43,6 @@ function Transactions() {
       }catch(err){
 
         console.log(err);
-
         setError("Unable to load transactions");
 
         localStorage.removeItem("token");
@@ -52,103 +60,237 @@ function Transactions() {
   if(!user) return <Loader message="Loading transactions..." />;
 
 
+  // FILTER + SEARCH
+  const filteredTransactions = transactions.filter((tx)=>{
+
+    const isSender =
+      tx.sender?._id === user._id ||
+      tx.sender?.name === user.name;
+
+    const otherName = isSender
+      ? tx.receiver?.name || "Unknown"
+      : tx.sender?.name || "Unknown";
+
+    if(category === "sent" && !isSender) return false;
+    if(category === "received" && isSender) return false;
+
+    if(status !== "all" && tx.status !== status) return false;
+
+    const txDate = new Date(tx.createdAt);
+    if(startDate && txDate < new Date(startDate)) return false;
+    if(endDate && txDate > new Date(endDate)) return false;
+
+    if(search && !otherName.toLowerCase().includes(search.toLowerCase())){
+      return false;
+    }
+
+    return true;
+  });
+
+
+  // 🔥 MONTH ANALYSIS LOGIC
+  const now = new Date();
+
+  const currentMonthTransactions = filteredTransactions.filter((tx)=>{
+    const date = new Date(tx.createdAt);
+    return (
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    );
+  });
+
+  let totalIn = 0;
+  let totalOut = 0;
+
+  currentMonthTransactions.forEach((tx)=>{
+
+    const isSender =
+      tx.sender?._id === user._id ||
+      tx.sender?.name === user.name;
+
+    if(isSender){
+      totalOut += Number(tx.amount || 0);
+    } else {
+      totalIn += Number(tx.amount || 0);
+    }
+
+  });
+
+
+  // GROUPING
+  const groupTransactions = () => {
+
+    const groups = {};
+
+    filteredTransactions.forEach((tx) => {
+
+      const date = new Date(tx.createdAt);
+      const today = new Date();
+
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      let label = "";
+
+      if (date.toDateString() === today.toDateString()) {
+        label = "Today";
+      } else if (date.toDateString() === yesterday.toDateString()) {
+        label = "Yesterday";
+      } else {
+        label = date.toLocaleDateString();
+      }
+
+      if (!groups[label]) groups[label] = [];
+      groups[label].push(tx);
+    });
+
+    return groups;
+  };
+
+  const grouped = groupTransactions();
+
+
   return(
 
     <div className="transactions-page">
 
       {/* HEADER */}
-
       <div className="transactions-header">
-
         <button onClick={()=>navigate("/dashboard")}>
           ← Back
         </button>
-
         <h2>Transaction History</h2>
+      </div>
+
+      {/* SEARCH */}
+      <input
+        className="tx-search"
+        placeholder="Search transactions..."
+        value={search}
+        onChange={(e)=>setSearch(e.target.value)}
+      />
+
+      {/* FILTERS */}
+      <div className="tx-filters">
+
+        <select value={category} onChange={(e)=>setCategory(e.target.value)}>
+          <option value="all">All</option>
+          <option value="sent">Sent</option>
+          <option value="received">Received</option>
+        </select>
+
+        <select value={status} onChange={(e)=>setStatus(e.target.value)}>
+          <option value="all">All Status</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+          <option value="pending">Pending</option>
+        </select>
+
+        <input type="date" value={startDate} onChange={(e)=>setStartDate(e.target.value)} />
+        <input type="date" value={endDate} onChange={(e)=>setEndDate(e.target.value)} />
+
+      </div>
+
+      {/* 🔥 ANALYSIS CARD */}
+      <div className="tx-analysis">
+
+        <div className="tx-analysis-left">
+          <h3>
+            {new Date().toLocaleString("default", {
+              month: "short",
+              year: "numeric"
+            })}
+          </h3>
+
+          <p>
+            In: ₦{totalIn.toLocaleString(undefined,{minimumFractionDigits:2})}
+            &nbsp;&nbsp;
+            Out: ₦{totalOut.toLocaleString(undefined,{minimumFractionDigits:2})}
+          </p>
+        </div>
+
+        <button
+          className="tx-analysis-btn"
+          onClick={()=>alert("Analytics page coming next 🔥")}
+        >
+          Analysis
+        </button>
 
       </div>
 
 
-      {error && (
-        <p className="error-message">{error}</p>
-      )}
+      {error && <p className="error-message">{error}</p>}
 
-
-      {transactions.length === 0 && (
+      {Object.keys(grouped).length === 0 && (
         <p className="no-transactions">No transactions found.</p>
       )}
 
 
-      {transactions.map((tx)=>{
+      {/* GROUPED */}
+      {Object.keys(grouped).map((group)=>(
 
-        const isSender =
-          tx.sender?._id === user._id ||
-          tx.sender?.name === user.name;
+        <div key={group}>
 
-        return(
+          <h4 className="tx-group-title">{group}</h4>
 
-          <div key={tx._id} className="transaction-card">
+          {grouped[group].map((tx)=>{
 
-            {/* LEFT */}
+            const isSender =
+              tx.sender?._id === user._id ||
+              tx.sender?.name === user.name;
 
-            <div className="tx-left">
+            const displayName = isSender
+              ? tx.receiver?.name || "Unknown"
+              : tx.sender?.name || "Unknown";
 
-              <strong>
-
-                {isSender
-                  ? `Sent to ${tx.receiver?.name || "Unknown"}`
-                  : `Received from ${tx.sender?.name || "Unknown"}`
-                }
-
-              </strong>
-
-              <p>
-
-                {tx.createdAt &&
-                  `${new Date(tx.createdAt).toLocaleDateString()} · ${new Date(tx.createdAt).toLocaleTimeString([],{
-                    hour:"2-digit",
-                    minute:"2-digit"
-                  })}`
-                }
-
-              </p>
-
-            </div>
-
-
-            {/* RIGHT */}
-
-            <div className="tx-right">
+            return(
 
               <div
-                className={`tx-amount ${
-                  isSender ? "negative" : "positive"
-                }`}
+                key={tx._id}
+                className="transaction-card opay-style"
+                onClick={()=>navigate("/transaction-details", { state: { tx } })}
               >
 
-                {isSender ? "-" : "+"}$
+                <div className={`tx-icon ${isSender ? "sent" : "received"}`}>
+                  {isSender ? "↗" : "↘"}
+                </div>
 
-                {Number(tx.amount || 0).toLocaleString(undefined,{
-                  minimumFractionDigits:2,
-                  maximumFractionDigits:2
-                })}
+                <div className="tx-left">
+                  <strong>{displayName}</strong>
+
+                  <p>
+                    {new Date(tx.createdAt).toLocaleTimeString([],{
+                      hour:"2-digit",
+                      minute:"2-digit"
+                    })}
+                  </p>
+                </div>
+
+                <div className="tx-right">
+
+                  <div className={`tx-amount ${isSender ? "negative" : "positive"}`}>
+                    {isSender ? "-" : "+"}$
+                    {Number(tx.amount || 0).toLocaleString(undefined,{
+                      minimumFractionDigits:2,
+                      maximumFractionDigits:2
+                    })}
+                  </div>
+
+                  <div className={`tx-status ${tx.status || "completed"}`}>
+                    {tx.status || "completed"}
+                  </div>
+
+                </div>
 
               </div>
 
+            );
 
-              {/* STATUS */}
+          })}
 
-              <div className={`tx-status ${tx.status || "completed"}`}>
-                {tx.status || "completed"}
-              </div>
+        </div>
 
-            </div>
-
-          </div>
-
-        );
-
-      })}
+      ))}
 
     </div>
 

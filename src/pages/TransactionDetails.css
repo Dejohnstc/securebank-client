@@ -1,0 +1,100 @@
+.tx-details-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tx-details-card {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.tx-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tx-header button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.tx-status-icon {
+  margin: 25px auto;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.tx-status-icon.completed {
+  background: #22c55e;
+  color: white;
+}
+
+.tx-status-icon.failed {
+  background: #ef4444;
+  color: white;
+}
+
+.tx-status-icon.pending {
+  background: #facc15;
+}
+
+.tx-amount-big {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.tx-sub {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.tx-details-box {
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+}
+
+.tx-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.tx-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.tx-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.tx-actions button:first-child {
+  background: #e5e7eb;
+}
+
+.tx-actions button:last-child {
+  background: #0f172a;
+  color: white;
+}

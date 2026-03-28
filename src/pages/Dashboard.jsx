@@ -124,7 +124,7 @@ function Dashboard() {
       navigate("/transactions");
     }}
   >
-    Transactions
+    Transactions History
   </button>
 
   <button

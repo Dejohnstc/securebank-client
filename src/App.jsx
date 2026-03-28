@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import TransferFailed from "./pages/TransferFailed";
 import TransferSuccess from "./pages/TransferSuccess";
+import TransactionDetails from "./pages/TransactionDetails";
 
 
 
@@ -105,6 +106,7 @@ function App() {
         <Route path="/transfer-success" element={<TransferSuccess />} />
 <Route path="/transfer-failed" element={<TransferFailed />} />
 <Route path="/admin/limits" element={<AdminLimits />} />
+<Route path="/transaction-details" element={<TransactionDetails />} />
 
         {/* Transactions */}
         <Route
