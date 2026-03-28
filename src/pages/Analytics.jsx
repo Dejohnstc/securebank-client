@@ -3,13 +3,18 @@ import api from "../api/api";
 import { useNavigate } from "react-router-dom";
 import "./Analytics.css";
 
-/* 🔥 ADD CHART IMPORTS */
+/* 🔥 CHART IMPORTS */
 import {
   PieChart,
   Pie,
   Cell,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid
 } from "recharts";
 
 function Analytics() {
@@ -45,30 +50,56 @@ function Analytics() {
   let income = 0;
   let expense = 0;
 
+  const now = new Date();
+
+  // 🔥 MONTHLY DATA
+  const monthlyData = Array(12).fill(0);
+
   transactions.forEach((tx) => {
 
     const isSender =
       tx.sender?._id === user._id ||
       tx.sender?.name === user.name;
 
+    const amount = Number(tx.amount || 0);
+    const date = new Date(tx.createdAt);
+
     if (tx.status === "completed") {
+
       if (isSender) {
-        expense += Number(tx.amount || 0);
+        expense += amount;
       } else {
-        income += Number(tx.amount || 0);
+        income += amount;
+      }
+
+      // monthly tracking
+      if (date.getFullYear() === now.getFullYear()) {
+        const monthIndex = date.getMonth();
+
+        if (isSender) {
+          monthlyData[monthIndex] -= amount;
+        } else {
+          monthlyData[monthIndex] += amount;
+        }
       }
     }
   });
 
   const balance = income - expense;
 
-  /* 🔥 PIE DATA (SAFE) */
+  /* 🔥 PIE DATA */
   const pieData = [
     { name: "Income", value: income || 0 },
     { name: "Expenses", value: expense || 0 }
   ];
 
   const COLORS = ["#16a34a", "#dc2626"];
+
+  /* 🔥 BAR CHART DATA */
+  const monthlyChartData = monthlyData.map((value, i) => ({
+    name: new Date(0, i).toLocaleString("default", { month: "short" }),
+    amount: value
+  }));
 
   return (
 
@@ -101,7 +132,6 @@ function Analytics() {
 
       {/* 🔥 PIE CHART */}
       <div className="analytics-chart">
-
         <h3>Spending Overview</h3>
 
         <ResponsiveContainer width="100%" height={220}>
@@ -125,7 +155,30 @@ function Analytics() {
 
           </PieChart>
         </ResponsiveContainer>
+      </div>
 
+      {/* 🔥 BAR CHART (MONTHLY TREND) */}
+      <div className="analytics-chart">
+        <h3>Monthly Trend</h3>
+
+        <ResponsiveContainer width="100%" height={260}>
+          <BarChart data={monthlyChartData}>
+
+            <CartesianGrid strokeDasharray="3 3" />
+
+            <XAxis dataKey="name" />
+
+            <YAxis />
+
+            <Tooltip />
+
+            <Bar
+              dataKey="amount"
+              radius={[6, 6, 0, 0]}
+            />
+
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
       {/* EXTRA STATS */}

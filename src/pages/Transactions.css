@@ -1,3 +1,4 @@
+/* PAGE */
 .transactions-page {
   max-width: 430px;
   margin: 0 auto;
@@ -20,7 +21,7 @@
   font-size: 16px;
   cursor: pointer;
   margin-right: 10px;
-  color: #0a3d62;
+  color: #0f172a;
 }
 
 .transactions-header h2 {
@@ -28,15 +29,20 @@
   font-weight: 600;
 }
 
-/* 🔥 SEARCH */
+/* SEARCH */
 .tx-search {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #e5e7eb;
   margin-bottom: 15px;
   font-size: 14px;
   background: white;
+  outline: none;
+}
+
+.tx-search:focus {
+  border-color: #0f172a;
 }
 
 /* FILTERS */
@@ -50,36 +56,38 @@
 .tx-filters select,
 .tx-filters input {
   padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
   font-size: 12px;
+  background: white;
 }
 
 /* GROUP TITLE */
 .tx-group-title {
-  margin: 20px 8px 10px;
+  margin: 18px 6px 10px;
   color: #9ca3af;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-/* 🔥 CARD */
+/* CARD */
 .transaction-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 14px;
   margin-bottom: 10px;
-  border-radius: 14px;
+  border-radius: 16px;
   background: white;
   transition: 0.2s ease;
   cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
 }
 
-/* 🔥 HOVER EFFECT */
+/* HOVER */
 .transaction-card:hover {
-  transform: scale(1.01);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
 }
 
 /* LEFT */
@@ -127,7 +135,7 @@
 
 .tx-status.completed {
   background: #e6f7ee;
-  color: #1f9d55;
+  color: #16a34a;
 }
 
 .tx-status.pending {
@@ -137,7 +145,7 @@
 
 .tx-status.failed {
   background: #fde8e8;
-  color: #c53030;
+  color: #dc2626;
 }
 
 /* ICON */
@@ -162,23 +170,18 @@
   color: #16a34a;
 }
 
-/* EMPTY STATE */
+/* EMPTY */
 .no-transactions {
   color: #64748b;
   text-align: center;
   margin-top: 40px;
 }
 
-/* LOADER */
-.loading {
-  text-align: center;
-  margin-top: 80px;
-}
-/* 🔥 ANALYSIS CARD */
+/* ANALYSIS CARD */
 .tx-analysis {
-  background: #1f2937;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   color: white;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 16px;
   margin-bottom: 15px;
   display: flex;
@@ -187,13 +190,13 @@
 }
 
 .tx-analysis h3 {
-  font-size: 18px;
-  margin-bottom: 5px;
+  font-size: 17px;
+  margin-bottom: 4px;
 }
 
 .tx-analysis p {
   font-size: 13px;
-  color: #d1d5db;
+  color: #cbd5f5;
 }
 
 .tx-analysis-btn {
@@ -204,4 +207,9 @@
   border-radius: 20px;
   cursor: pointer;
   font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.tx-analysis-btn:hover {
+  background: #059669;
 }

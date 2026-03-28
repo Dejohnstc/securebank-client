@@ -88,66 +88,33 @@ function Transactions() {
   });
 
 
-  // 🔥 FIXED ANALYSIS (DATE-AWARE)
+  // 🔥 LIGHT ANALYSIS (ONLY SUMMARY)
   const now = new Date();
-
-  const analysisBase = transactions.filter((tx) => {
-
-    const date = new Date(tx.createdAt);
-
-    if (startDate && endDate) {
-      return (
-        date >= new Date(startDate) &&
-        date <= new Date(endDate)
-      );
-    }
-
-    return (
-      date.getMonth() === now.getMonth() &&
-      date.getFullYear() === now.getFullYear()
-    );
-  });
 
   let totalIn = 0;
   let totalOut = 0;
-
-  analysisBase.forEach((tx) => {
-
-    const isSender =
-      tx.sender?._id === user._id ||
-      tx.sender?.name === user.name;
-
-    if (tx.status === "completed") {
-      if (isSender) {
-        totalOut += Number(tx.amount || 0);
-      } else {
-        totalIn += Number(tx.amount || 0);
-      }
-    }
-
-  });
-
-
-  // 🔥 MONTHLY BREAKDOWN
-  const monthlyData = Array(12).fill(0);
 
   transactions.forEach((tx) => {
 
     const date = new Date(tx.createdAt);
 
-    if (date.getFullYear() === now.getFullYear() && tx.status === "completed") {
+    if (
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    ) {
 
       const isSender =
         tx.sender?._id === user._id ||
         tx.sender?.name === user.name;
 
-      const monthIndex = date.getMonth();
-
-      if (isSender) {
-        monthlyData[monthIndex] -= Number(tx.amount || 0);
-      } else {
-        monthlyData[monthIndex] += Number(tx.amount || 0);
+      if (tx.status === "completed") {
+        if (isSender) {
+          totalOut += Number(tx.amount || 0);
+        } else {
+          totalIn += Number(tx.amount || 0);
+        }
       }
+
     }
 
   });
@@ -227,7 +194,7 @@ function Transactions() {
 
       </div>
 
-      {/* 🔥 ANALYSIS CARD */}
+      {/* 🔥 ANALYSIS CARD (CLEAN) */}
       <div className="tx-analysis">
 
         <div className="tx-analysis-left">
@@ -251,37 +218,6 @@ function Transactions() {
         >
           Analysis
         </button>
-
-      </div>
-
-      {/* 🔥 MONTHLY BREAKDOWN */}
-      <div className="tx-monthly">
-
-        {monthlyData.map((value, i) => {
-
-          const monthName = new Date(0, i).toLocaleString("default", { month: "short" });
-
-          return (
-            <div key={i} className="tx-month-bar">
-
-              <span>{monthName}</span>
-
-              <div className="bar">
-                <div
-                  className="fill"
-                  style={{
-                    width: `${Math.min(Math.abs(value) / 1000 * 100, 100)}%`,
-                    background: value >= 0 ? "#16a34a" : "#dc2626"
-                  }}
-                />
-              </div>
-
-              <small>₦{Math.abs(value).toLocaleString()}</small>
-
-            </div>
-          );
-
-        })}
 
       </div>
 
