@@ -1,47 +1,52 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api"; // ✅ IMPORTANT
 import "./Zelle.css";
-
-const zelleUsers = {
-  "kewilson785@gmail.com": "Kevin Wilson",
-  "davebarry7766@gmail.com": "Dave Barry",
-  "debarrysrentals87@gmail.com": "Clinton Duke",
-  "lisa@bank.com": "Lisa M Redd",
-  "redfin@gmail.com": "REDFIN LLC"
-};
 
 function Zelle() {
   const navigate = useNavigate();
+
   const [recipientEmail, setRecipientEmail] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+
     if (!recipientEmail || !amount) {
       setError("Please fill in all fields.");
       return;
     }
 
-    if (!zelleUsers[recipientEmail]) {
-      setError("Zelle user not found.");
-      return;
-    }
-    if (!recipientEmail || !amount) {
-  alert("Missing transfer details");
-  return;
-}
+    try {
+      setLoading(true);
+      setError("");
 
-    navigate("/zelle-review", {
-      state: {
-        email: recipientEmail,
-        name: zelleUsers[recipientEmail],
-        amount: Number(amount)
-      }
-    });
+      // 🔥 CALL BACKEND
+      const res = await api.get(`/api/user/by-email/${recipientEmail}`);
+
+      const user = res.data;
+
+      navigate("/zelle-review", {
+        state: {
+          email: user.email,
+          name: user.name,
+          amount: Number(amount)
+        }
+      });
+
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Zelle user not found."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="zelle-wrapper">
+
       <div className="zelle-header">
         <button onClick={() => navigate(-1)}>←</button>
         <h2>Zelle®</h2>
@@ -49,6 +54,7 @@ function Zelle() {
       </div>
 
       <div className="zelle-card">
+
         <label>Send to</label>
         <input
           type="email"
@@ -67,10 +73,16 @@ function Zelle() {
 
         {error && <div className="zelle-error">{error}</div>}
 
-        <button className="zelle-send-btn" onClick={handleContinue}>
-          Continue
+        <button
+          className="zelle-send-btn"
+          onClick={handleContinue}
+          disabled={loading}
+        >
+          {loading ? "Checking..." : "Continue"}
         </button>
+
       </div>
+
     </div>
   );
 }
