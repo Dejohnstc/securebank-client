@@ -53,7 +53,7 @@ function Login() {
       <div className="login-card">
 
         <div className="login-brand">
-          <div className="logo-box">CB</div>
+          <div className="logo-box">SB</div>
           <h2>SecureBank</h2>
         </div>
 
