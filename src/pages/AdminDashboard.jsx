@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const API = "https://securebank-api-ixis.onrender.com";
 
 export default function AdminDashboard() {
+
+  const navigate = useNavigate();
+  const [editDate, setEditDate] = useState("");
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [amount, setAmount] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
-  const [deletingId, setDeletingId] = useState(null); // ✅ FIX
+  const [deletingId, setDeletingId] = useState(null);
+
+  // 🔥 NEW: REGISTRATION CONTROL
+  const [registrationEnabled, setRegistrationEnabled] = useState(true);
 
   const token = localStorage.getItem('token');
 
@@ -25,6 +33,29 @@ export default function AdminDashboard() {
     }
   };
 
+  const updateCreatedAt = async (userId) => {
+  try {
+
+    if (!editDate) {
+      alert("Select a date");
+      return;
+    }
+
+    await axios.put(
+      `${API}/api/admin/users/${userId}/createdAt`,
+      { createdAt: editDate },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setEditDate("");
+    fetchUsers();
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to update date");
+  }
+};
+
   useEffect(() => {
     const load = async () => {
       await fetchUsers();
@@ -33,48 +64,49 @@ export default function AdminDashboard() {
     load();
   }, []);
 
+  // 🔥 TOGGLE REGISTRATION (FRONTEND SIMULATION)
+  const toggleRegistration = () => {
+    setRegistrationEnabled(!registrationEnabled);
+  };
+
   // 💰 UPDATE BALANCE
   const updateBalance = async (action) => {
-  try {
-    if (!selectedUser) {
-      alert("Select a user first");
-      return;
-    }
+    try {
 
-    if (amount === "" || isNaN(amount)) {
-      alert("Enter a valid number");
-      return;
-    }
-
-    const numericAmount = Number(amount);
-
-    await axios.put(
-      `${API}/api/admin/users/${selectedUser}/balance`,
-      {
-        amount: numericAmount,
-        action: action
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` }
+      if (!selectedUser) {
+        alert("Select a user first");
+        return;
       }
-    );
 
-    setAmount("");
-    setSelectedUser(null);
-    fetchUsers();
+      if (amount === "" || isNaN(amount)) {
+        alert("Enter a valid number");
+        return;
+      }
 
-  } catch (err) {
-    console.error("BALANCE ERROR:", err.response?.data || err.message);
-    alert(err.response?.data?.message || "Balance update failed");
-  }
-};
+      const numericAmount = Number(amount);
 
-  // ❌ SAFE DELETE (FIXED)
+      await axios.put(
+        `${API}/api/admin/users/${selectedUser}/balance`,
+        { amount: numericAmount, action },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setAmount("");
+      setSelectedUser(null);
+      fetchUsers();
+
+    } catch (err) {
+      console.error("BALANCE ERROR:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Balance update failed");
+    }
+  };
+
+  // DELETE
   const deleteUser = async (id) => {
-    if (deletingId) return; // 🚫 prevent multiple clicks
 
-    const confirmDelete = window.confirm("Delete this user?");
-    if (!confirmDelete) return;
+    if (deletingId) return;
+
+    if (!window.confirm("Delete this user?")) return;
 
     try {
       setDeletingId(id);
@@ -86,158 +118,222 @@ export default function AdminDashboard() {
       fetchUsers();
 
     } catch (err) {
-      console.error("DELETE ERROR:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Delete failed");
+      console.error(err);
     } finally {
       setDeletingId(null);
     }
   };
 
-  // 🚫 SUSPEND
+  // SUSPEND
   const suspendUser = async (id) => {
     try {
       await axios.put(`${API}/api/admin/users/${id}/suspend`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
       fetchUsers();
     } catch (err) {
-      console.error("SUSPEND ERROR:", err.response?.data || err.message);
+      console.error(err);
     }
   };
 
-  // 📊 STATS
   const totalUsers = users.length;
   const totalBalance = users.reduce((sum, u) => sum + (u.balance || 0), 0);
 
   if (loading) return <p style={{ padding: 20 }}>Loading...</p>;
 
   return (
-    <div style={{ padding: "30px", background: "#0f172a", minHeight: "100vh", color: "white" }}>
 
-      <h1 style={{ marginBottom: "20px" }}>🏦 Admin Dashboard</h1>
+    <div style={pageStyle}>
 
-      {/* 📊 STATS */}
-      <div style={{ display: "flex", gap: "20px", marginBottom: "30px" }}>
-        <div style={cardStyle}>
-          <h3>Total Users</h3>
-          <p style={statNumber}>{totalUsers}</p>
-        </div>
+      {/* HEADER */}
+      <div style={headerStyle}>
+        <h1>Admin Dashboard</h1>
 
-        <div style={cardStyle}>
-          <h3>Total Balance</h3>
-          <p style={statNumber}>${totalBalance}</p>
+        <div style={{ display: "flex", gap: 10 }}>
+
+          {/* 🔥 LIMIT BUTTON */}
+          <button style={btnPrimary} onClick={() => navigate("/admin/limits")}>
+            Limits
+          </button>
+
+          {/* 🔥 REGISTRATION CONTROL */}
+          <button
+            style={{
+              ...btnPrimary,
+              background: registrationEnabled ? "#16a34a" : "#dc2626"
+            }}
+            onClick={toggleRegistration}
+          >
+            {registrationEnabled ? "Registration ON" : "Registration OFF"}
+          </button>
+
         </div>
       </div>
 
-      {/* 👥 USERS GRID */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-        gap: "20px"
-      }}>
+      {/* STATS */}
+      <div style={statsWrap}>
+        <div style={card}>
+          <p>Total Users</p>
+          <h2>{totalUsers}</h2>
+        </div>
+
+        <div style={card}>
+          <p>Total Balance</p>
+          <h2>${totalBalance.toLocaleString()}</h2>
+        </div>
+      </div>
+
+      {/* USERS */}
+      <div style={grid}>
+
         {users.map(user => (
+
           <div key={user._id} style={userCard}>
 
             <h3>{user.name}</h3>
             <p>{user.email}</p>
 
-            <p>Status:
-              <span style={{ color: user.status === "active" ? "lime" : "red" }}>
-                {user.status}
+            <p>
+              Status:
+              <span style={{ color: user.status === "active" ? "#16a34a" : "#dc2626" }}>
+                {" "}{user.status}
               </span>
             </p>
 
             <p>Balance: <strong>${user.balance || 0}</strong></p>
 
-            {/* 🗓️ REGISTRATION DATE */}
             <p>
-              Registered:{" "}
-              <strong>
-                {user.createdAt
-                  ? new Date(user.createdAt).toLocaleDateString()
-                  : "N/A"}
-              </strong>
-            </p>
+  Registered:
+  <strong>
+    {user.createdAt
+      ? new Date(user.createdAt).toLocaleDateString()
+      : "N/A"}
+  </strong>
+</p>
 
-            {/* 💰 BALANCE CONTROL */}
-            <div style={{ marginTop: "10px" }}>
-             <input
-  type="number"
-  placeholder="Amount"
-  value={selectedUser === user._id ? amount : ""}
+<input
+  type="date"
+  value={selectedUser === user._id ? editDate : ""}
   onChange={(e) => {
     setSelectedUser(user._id);
-    setAmount(e.target.value.replace(/[^0-9.]/g, "")); // ✅ CLEAN INPUT
+    setEditDate(e.target.value);
   }}
-  style={inputStyle}
+  style={input}
 />
 
-              <div style={{ marginTop: "5px" }}>
-                <button style={btnGreen} onClick={() => updateBalance("add")}>➕</button>
-                <button style={btnYellow} onClick={() => updateBalance("subtract")}>➖</button>
-                <button style={btnBlue} onClick={() => updateBalance("set")}>Set</button>
-              </div>
+<button
+  style={{ ...btnBlue, marginTop: 5 }}
+  onClick={() => updateCreatedAt(user._id)}
+>
+  Update Date
+</button>
+
+            {/* BALANCE */}
+            <input
+              type="number"
+              placeholder="Amount"
+              value={selectedUser === user._id ? amount : ""}
+              onChange={(e) => {
+                setSelectedUser(user._id);
+                setAmount(e.target.value.replace(/[^0-9.]/g, ""));
+              }}
+              style={input}
+            />
+
+            <div style={{ marginTop: 8 }}>
+              <button style={btnGreen} onClick={() => updateBalance("add")}>+</button>
+              <button style={btnYellow} onClick={() => updateBalance("subtract")}>-</button>
+              <button style={btnBlue} onClick={() => updateBalance("set")}>Set</button>
             </div>
 
             {/* ACTIONS */}
-            <div style={{ marginTop: "15px" }}>
+            <div style={{ marginTop: 12 }}>
 
-              {/* ❌ DELETE (BLOCK ADMIN) */}
               {user.role !== "admin" && (
                 <button
                   style={btnRed}
                   disabled={deletingId === user._id}
                   onClick={() => deleteUser(user._id)}
                 >
-                  {deletingId === user._id ? "Deleting..." : "Delete"}
+                  Delete
                 </button>
               )}
 
-              <button
-                style={btnOrange}
-                onClick={() => suspendUser(user._id)}
-              >
+              <button style={btnOrange} onClick={() => suspendUser(user._id)}>
                 Suspend
               </button>
 
             </div>
 
           </div>
+
         ))}
+
       </div>
+
     </div>
   );
 }
 
-// 🎨 STYLES
-const cardStyle = {
+/* 🔥 CLEAN STYLES */
+const pageStyle = {
+  padding: 20,
+  background: "#0f172a",
+  minHeight: "100vh",
+  color: "white"
+};
+
+const headerStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 20
+};
+
+const statsWrap = {
+  display: "flex",
+  gap: 15,
+  marginBottom: 25
+};
+
+const card = {
+  flex: 1,
   background: "#1e293b",
-  padding: "20px",
-  borderRadius: "10px"
+  padding: 20,
+  borderRadius: 12
+};
+
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))",
+  gap: 15
 };
 
 const userCard = {
   background: "#1e293b",
-  padding: "20px",
-  borderRadius: "12px",
-  boxShadow: "0 5px 15px rgba(0,0,0,0.3)"
+  padding: 16,
+  borderRadius: 14
 };
 
-const statNumber = {
-  fontSize: "24px",
-  fontWeight: "bold"
-};
-
-const inputStyle = {
+const input = {
   width: "100%",
-  padding: "8px",
-  borderRadius: "6px",
-  border: "none"
+  padding: 8,
+  borderRadius: 8,
+  border: "none",
+  marginTop: 10
 };
 
-const btnGreen = { background: "green", color: "white", marginRight: 5 };
-const btnYellow = { background: "gold", color: "black", marginRight: 5 };
-const btnBlue = { background: "blue", color: "white" };
-const btnRed = { background: "red", color: "white", marginRight: 5 };
-const btnOrange = { background: "orange", color: "white" };
+const btnPrimary = {
+  padding: "8px 14px",
+  borderRadius: 8,
+  border: "none",
+  background: "#2563eb",
+  color: "white",
+  cursor: "pointer"
+};
+
+const btnGreen = { background: "#16a34a", color: "white", marginRight: 5 };
+const btnYellow = { background: "#facc15", color: "black", marginRight: 5 };
+const btnBlue = { background: "#3b82f6", color: "white" };
+const btnRed = { background: "#dc2626", color: "white", marginRight: 5 };
+const btnOrange = { background: "#f97316", color: "white" };
