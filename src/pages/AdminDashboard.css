@@ -162,7 +162,7 @@ button:active {
 
 /* WARNING */
 .btn-row button:nth-child(2) {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  background: linear-gradient(135deg,  #0a3d62,#0a3d62);
   color: black;
 }
 
