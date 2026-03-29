@@ -251,3 +251,29 @@ html, body {
     padding: 14px;
   }
 }
+/* LIVE VALIDATION */
+
+.zelle-checking {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+.zelle-user-found {
+  margin-top: 8px;
+  padding: 8px;
+  background: #ecfdf5;
+  color: #16a34a;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.zelle-user-error {
+  margin-top: 8px;
+  padding: 8px;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 10px;
+  font-size: 13px;
+}

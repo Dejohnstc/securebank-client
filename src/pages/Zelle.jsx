@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/api"; // ✅ IMPORTANT
+import api from "../api/api";
 import "./Zelle.css";
 
 function Zelle() {
@@ -8,8 +8,44 @@ function Zelle() {
 
   const [recipientEmail, setRecipientEmail] = useState("");
   const [amount, setAmount] = useState("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [checking, setChecking] = useState(false);
+  const [foundUser, setFoundUser] = useState(null);
+
+  /* 🔥 LIVE EMAIL CHECK */
+  useEffect(() => {
+
+    if (!recipientEmail) {
+      setFoundUser(null);
+      return;
+    }
+
+    const delay = setTimeout(async () => {
+
+      try {
+        setChecking(true);
+        setError("");
+
+        const res = await api.get(`/api/user/by-email/${recipientEmail}`);
+
+        setFoundUser(res.data);
+
+      } catch {
+        setFoundUser(null);
+      } finally {
+        setChecking(false);
+      }
+
+    }, 600); // debounce
+
+    return () => clearTimeout(delay);
+
+  }, [recipientEmail]);
+
+
 
   const handleContinue = async () => {
 
@@ -18,31 +54,31 @@ function Zelle() {
       return;
     }
 
+    if (!foundUser) {
+      setError("Zelle user not found.");
+      return;
+    }
+
     try {
+
       setLoading(true);
-      setError("");
-
-      // 🔥 CALL BACKEND
-      const res = await api.get(`/api/user/by-email/${recipientEmail}`);
-
-      const user = res.data;
 
       navigate("/zelle-review", {
         state: {
-          email: user.email,
-          name: user.name,
+          email: foundUser.email,
+          name: foundUser.name,
           amount: Number(amount)
         }
       });
 
-    } catch (err) {
-      setError(
-        err.response?.data?.message || "Zelle user not found."
-      );
+    } catch  {
+      setError("Something went wrong");
     } finally {
       setLoading(false);
     }
+
   };
+
 
   return (
     <div className="zelle-wrapper">
@@ -56,6 +92,7 @@ function Zelle() {
       <div className="zelle-card">
 
         <label>Send to</label>
+
         <input
           type="email"
           placeholder="Email or mobile number"
@@ -63,7 +100,25 @@ function Zelle() {
           onChange={(e) => setRecipientEmail(e.target.value)}
         />
 
+        {/* 🔥 LIVE STATUS */}
+        {checking && (
+          <p className="zelle-checking">Checking user...</p>
+        )}
+
+        {foundUser && (
+          <div className="zelle-user-found">
+            ✅ {foundUser.name}
+          </div>
+        )}
+
+        {!checking && recipientEmail && !foundUser && (
+          <div className="zelle-user-error">
+            ❌ User not found
+          </div>
+        )}
+
         <label>Amount</label>
+
         <input
           type="number"
           placeholder="$0.00"
@@ -78,7 +133,7 @@ function Zelle() {
           onClick={handleContinue}
           disabled={loading}
         >
-          {loading ? "Checking..." : "Continue"}
+          {loading ? "Processing..." : "Continue"}
         </button>
 
       </div>

@@ -1,0 +1,233 @@
+
+/* ================= BASE ================= */
+
+.admin-page {
+  padding: 24px;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  min-height: 100vh;
+  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ================= HEADER ================= */
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.admin-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ================= STATS ================= */
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 18px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  transition: 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+.stat-card p {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.stat-card h2 {
+  font-size: 20px;
+  margin-top: 6px;
+}
+
+/* ================= GRID ================= */
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+/* ================= USER CARD ================= */
+
+.user-card {
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(14px);
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  transition: 0.25s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 35px rgba(0,0,0,0.4);
+}
+
+.user-card h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.user-card p {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 3px 0;
+}
+
+/* ================= STATUS ================= */
+
+.user-card span.active {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.user-card span.suspended {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* ================= INPUT ================= */
+
+.user-card input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: white;
+  font-size: 13px;
+  transition: 0.2s ease;
+}
+
+.user-card input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+}
+
+/* ================= BUTTON SYSTEM ================= */
+
+button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* PRIMARY */
+button {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  box-shadow: 0 6px 14px rgba(37,99,235,0.35);
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* SUCCESS */
+.btn-row button:nth-child(1) {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+/* WARNING */
+.btn-row button:nth-child(2) {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: black;
+}
+
+/* INFO */
+.btn-row button:nth-child(3) {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+}
+
+/* DANGER */
+button.danger {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+/* SUSPEND */
+button:not(.danger):last-child {
+  background: linear-gradient(135deg, #f97316, #fb923c);
+}
+
+/* HEADER BUTTONS */
+.admin-actions button {
+  padding: 10px 16px;
+}
+
+/* DISABLED */
+button:disabled {
+  background: #475569 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ================= BUTTON ROW ================= */
+
+.btn-row {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+}
+
+.btn-row button {
+  flex: 1;
+}
+
+/* ================= LOADING ================= */
+
+.admin-loading {
+  padding: 30px;
+  text-align: center;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 480px) {
+
+  .admin-page {
+    padding: 16px;
+  }
+
+  .admin-header h1 {
+    font-size: 18px;
+  }
+
+  .user-card {
+    padding: 14px;
+  }
+
+}
