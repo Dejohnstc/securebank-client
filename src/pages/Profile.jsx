@@ -275,8 +275,8 @@ maximumFractionDigits:2
 <h3>Account Information</h3>
 
 <div className="profile-row">
-<span>Member Since</span>
-<strong>{new Date(user.createdAt).toLocaleDateString()}</strong>
+{/* <span>Member Since</span>
+<strong>{new Date(user.createdAt).toLocaleDateString()}</strong> */}
 </div>
 
 <div className="profile-row">
