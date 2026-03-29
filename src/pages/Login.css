@@ -109,7 +109,7 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: #d1d5db;
+  
 }
 
 .login-footer span {
@@ -162,7 +162,7 @@
 .register-link{
 border:none;
 background:none;
-color:#0a3d62;
+color:white;
 font-weight:600;
 margin-left:6px;
 cursor:pointer;
