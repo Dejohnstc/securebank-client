@@ -11,6 +11,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:25px;
+color: #0a3d62;
 }
 
 .cards-header button{
@@ -103,6 +104,7 @@ display:flex;
 flex-direction:column;
 gap:12px;
 margin-bottom:20px;
+color: #0a3d62;
 }
 
 .card-actions button{

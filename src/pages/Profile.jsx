@@ -174,7 +174,7 @@ return(
 
 <div className="profile-header">
 
-<button onClick={()=>navigate("/dashboard")}>
+<button className="ww" onClick={()=>navigate("/dashboard")}>
 ←
 </button>
 
