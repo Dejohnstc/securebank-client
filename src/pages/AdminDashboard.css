@@ -178,7 +178,7 @@ button.danger {
 
 /* SUSPEND */
 button:not(.danger):last-child {
-  background: linear-gradient(135deg, #f97316, #fb923c);
+  background: linear-gradient(135deg, #0a3d62, #0a3d62);
 }
 
 /* HEADER BUTTONS */
