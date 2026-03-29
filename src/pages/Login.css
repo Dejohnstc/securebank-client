@@ -109,10 +109,11 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
+  color: #d1d5db;
 }
 
 .login-footer span {
-  color: white;
+  color: #0a3d62;
   font-weight: 600;
   cursor: pointer;
 }
