@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../api/api";
 import "./Cards.css";
 
 function Cards() {
   const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
 
   const [cardFrozen, setCardFrozen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -11,7 +14,63 @@ function Cards() {
   const [pin, setPin] = useState("");
   const [limit, setLimit] = useState(5000);
 
+  const [cardData, setCardData] = useState(null); // 🔥 NEW
+
   const correctPin = "070362";
+
+  /* =========================
+     GENERATE CARD
+  ========================= */
+
+  const generateCard = () => {
+    const randomDigits = () =>
+      Math.floor(1000 + Math.random() * 9000);
+
+    const number = `5${randomDigits()} ${randomDigits()} ${randomDigits()} ${randomDigits()}`;
+
+    const expiryYear = new Date().getFullYear() + 3;
+    const expiry = `12/${expiryYear.toString().slice(-2)}`;
+
+    const cvv = Math.floor(100 + Math.random() * 900);
+
+    return {
+      number,
+      expiry,
+      cvv
+    };
+  };
+
+  /* =========================
+     LOAD USER + CARD
+  ========================= */
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await api.get("/api/user/profile");
+        setUser(res.data);
+
+        // 🔥 LOAD OR CREATE CARD
+        const stored = localStorage.getItem(`card_${res.data._id}`);
+
+        if (stored) {
+          setCardData(JSON.parse(stored));
+        } else {
+          const newCard = generateCard();
+          localStorage.setItem(
+            `card_${res.data._id}`,
+            JSON.stringify(newCard)
+          );
+          setCardData(newCard);
+        }
+
+      } catch  {
+        console.error("Failed to load user");
+      }
+    };
+
+    load();
+  }, []);
 
   const handleFreeze = () => {
     setCardFrozen(!cardFrozen);
@@ -35,19 +94,18 @@ function Cards() {
   return (
     <div className="cards-page">
 
-      {/* Header */}
+      {/* HEADER */}
       <div className="cards-header">
         <button onClick={() => navigate("/dashboard")}>←</button>
         <h2>My Cards</h2>
         <div />
       </div>
 
-      {/* Card */}
+      {/* CARD */}
       <div className="card-visual">
 
         <div className="card-bank">SecureBank</div>
 
-        {/* VISA LOGO */}
         <div className="card-network">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
@@ -58,31 +116,43 @@ function Cards() {
         <div className="card-chip"></div>
 
         <div className="card-number">
-          {showDetails ? "5274 1932 8841 8509" : "•••• •••• •••• 8509"}
+          {cardData
+            ? showDetails
+              ? cardData.number
+              : "•••• •••• •••• " + cardData.number.slice(-4)
+            : "Loading..."}
         </div>
 
         <div className="card-bottom">
 
           <div>
             <span>Card Holder</span>
-            <p>ALEX MARTINS</p>
+            <p>{user ? user.name : "Loading..."}</p>
           </div>
 
           <div>
             <span>Expires</span>
-            <p>{showDetails ? "12/28" : "**/**"}</p>
+            <p>
+              {showDetails && cardData
+                ? cardData.expiry
+                : "**/**"}
+            </p>
           </div>
 
           <div>
             <span>CVV</span>
-            <p>{showDetails ? "734" : "***"}</p>
+            <p>
+              {showDetails && cardData
+                ? cardData.cvv
+                : "***"}
+            </p>
           </div>
 
         </div>
 
       </div>
 
-      {/* Card Status */}
+      {/* STATUS */}
       <div className="card-status">
         Status:
         <span className={cardFrozen ? "frozen" : "active"}>
@@ -90,7 +160,7 @@ function Cards() {
         </span>
       </div>
 
-      {/* Actions */}
+      {/* ACTIONS */}
       <div className="card-actions">
 
         <button onClick={handleFreeze}>
@@ -102,14 +172,12 @@ function Cards() {
         </button>
 
         <button>Change Card PIN</button>
-
         <button>Report Lost Card</button>
-
         <button>Request Replacement</button>
 
       </div>
 
-      {/* Spending Limit */}
+      {/* LIMIT */}
       <div className="limit-section">
 
         <h3>Daily Spending Limit</h3>
@@ -126,7 +194,7 @@ function Cards() {
 
       </div>
 
-      {/* Virtual Card */}
+      {/* VIRTUAL */}
       <div className="virtual-card">
 
         <h3>Virtual Card</h3>
@@ -137,7 +205,7 @@ function Cards() {
 
       </div>
 
-      {/* Wallet */}
+      {/* WALLET */}
       <div className="wallet-section">
 
         <h3>Digital Wallet</h3>
