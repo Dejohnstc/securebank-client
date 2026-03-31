@@ -250,18 +250,24 @@ function SendMoney() {
 
       {/* Transfer Type */}
       <div className="section">
-        <h3>Transfer Type</h3>
+  <h3>Transfer Type</h3>
 
-        <div className={`option ${transferType === "ach" ? "active" : ""}`}>
-          ACH Transfer
-          <span>1–2 business days</span>
-        </div>
+  <div
+    className={`option ${transferType === "ach" ? "active" : ""}`}
+    onClick={() => _setTransferType("ach")}
+  >
+    ACH Transfer
+    <span>1–2 business days</span>
+  </div>
 
-        <div className={`option ${transferType === "wire" ? "active" : ""}`}>
-          Wire Transfer
-          <span>Same day delivery</span>
-        </div>
-      </div>
+  <div
+    className={`option ${transferType === "wire" ? "active" : ""}`}
+    onClick={() => _setTransferType("wire")}
+  >
+    Wire Transfer
+    <span>Same day delivery</span>
+  </div>
+</div>
 
       {/* Recipient */}
       <div className="section">
@@ -312,6 +318,29 @@ function SendMoney() {
           <p className="error-text">{errors.bankName}</p>
         )}
       </div>
+      {/* 🔥 WIRE TRANSFER EXTRA FIELDS */}
+{transferType === "wire" && (
+  <>
+    <input
+      name="swiftCode"
+      placeholder="SWIFT Code (e.g SBIUS6SXXX)"
+      value={formData.swiftCode}
+      onChange={handleChange}
+      className={errors.swiftCode ? "input-error" : ""}
+    />
+
+    {errors.swiftCode && (
+      <p className="error-text">{errors.swiftCode}</p>
+    )}
+
+    <input
+      name="bankAddress"
+      placeholder="Bank Address"
+      value={formData.bankAddress}
+      onChange={handleChange}
+    />
+  </>
+)}
 
       {/* AMOUNT */}
       <div className="section">
