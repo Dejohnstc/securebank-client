@@ -12,6 +12,9 @@ function ReviewTransfer() {
   const [pin, setPin] = useState("");
   const [processing,setProcessing] = useState(false);
 
+  const [user, setUser] = useState(null); // 🔥 NEW
+  const [cardLast4, setCardLast4] = useState("****"); // 🔥 NEW
+
   const state = location.state;
 
   useEffect(() => {
@@ -19,6 +22,28 @@ function ReviewTransfer() {
       navigate("/send-money");
     }
   }, [state, navigate]);
+
+  /* 🔥 LOAD USER + CARD */
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const res = await api.get("/api/user/profile");
+        setUser(res.data);
+
+        const stored = localStorage.getItem(`card_${res.data._id}`);
+
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          setCardLast4(parsed.number.slice(-4));
+        }
+
+      } catch  {
+        console.log("User load failed");
+      }
+    };
+
+    loadUser();
+  }, []);
 
   if (!state) return null;
 
@@ -48,75 +73,73 @@ function ReviewTransfer() {
       : "1–2 business days";
 
 
-/* CONFIRM TRANSFER */
+  /* CONFIRM TRANSFER */
 
-const handleConfirm = async () => {
+  const handleConfirm = async () => {
 
-  if(pin !== "070362"){
-    alert("Incorrect PIN");
-    setPin("");
-    return;
-  }
+    if(pin !== "070362"){
+      alert("Incorrect PIN");
+      setPin("");
+      return;
+    }
 
-  try{
+    try{
 
-    setProcessing(true);
+      setProcessing(true);
 
-    await api.post("/api/transactions/transfer",{
-      accountNumber: recipientAccount,
-      amount: numericAmount
-    });
+      await api.post("/api/transactions/transfer",{
+        accountNumber: recipientAccount,
+        amount: numericAmount
+      });
 
-    // ✅ SUCCESS PAGE
-    setTimeout(()=>{
+      setTimeout(()=>{
 
-      navigate("/transfer-success",{
+        navigate("/transfer-success",{
+          state:{
+            name: recipientName,
+            amount:numericAmount,
+            reference
+          }
+        });
+
+      },2000);
+
+    }catch(error){
+
+      navigate("/transfer-failed",{
         state:{
-          name: recipientName,
-          amount:numericAmount,
-          reference
+          message: error.response?.data?.message || "Transaction declined"
         }
       });
 
-    },2000);
+    }finally{
 
-  }catch(error){
+      setProcessing(false);
 
-    // ❌ FAILED PAGE
-    navigate("/transfer-failed",{
-      state:{
-        message: error.response?.data?.message || "Transaction declined"
-      }
-    });
+    }
 
-  }finally{
-
-    setProcessing(false);
-
-  }
-
-};
+  };
 
 
-/* PROCESSING SCREEN */
+  /* PROCESSING SCREEN */
 
-if (processing) {
-  return(
-    <div className="processing-page">
-      <div className="processing-card">
+  if (processing) {
+    return(
+      <div className="processing-page">
+        <div className="processing-card">
 
-        <div className="loader-circle"></div>
+          <div className="loader-circle"></div>
 
-        <h3>Securing your transfer...</h3>
+          <h3>Securing your transfer...</h3>
 
-        <p>
-          Please wait while we safely process your transaction.
-        </p>
+          <p>
+            Please wait while we safely process your transaction.
+          </p>
 
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 
   return (
@@ -130,10 +153,15 @@ if (processing) {
 
       <div className="review-card">
 
+        {/* 🔥 FIXED FROM SECTION */}
         <div className="review-section">
           <h4>From</h4>
-          <p className="review-main">ALEX MARTINS</p>
-          <p className="review-sub">Total Checking •••• 8509</p>
+          <p className="review-main">
+            {user ? user.name : "Loading..."}
+          </p>
+          <p className="review-sub">
+            Total Checking •••• {cardLast4}
+          </p>
         </div>
 
         <div className="review-section">
@@ -207,7 +235,6 @@ if (processing) {
 
 
       {/* PIN MODAL */}
-
       {showPinModal && (
 
         <div className="pin-overlay">

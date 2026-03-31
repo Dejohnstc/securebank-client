@@ -12,6 +12,9 @@ function ZelleReview() {
   const [showPinModal, setShowPinModal] = useState(false);
   const [pin, setPin] = useState("");
 
+  const [user, setUser] = useState(null);
+  const [cardLast4, setCardLast4] = useState("****");
+
   const state = location.state;
 
   useEffect(() => {
@@ -19,6 +22,30 @@ function ZelleReview() {
       navigate("/zelle");
     }
   }, [state, navigate]);
+
+  /* 🔥 LOAD USER + CARD */
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const res = await api.get("/api/user/profile");
+        setUser(res.data);
+
+        // 🔥 LOAD CARD FROM LOCAL STORAGE
+        const stored = localStorage.getItem(`card_${res.data._id}`);
+
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          const last4 = parsed.number.slice(-4);
+          setCardLast4(last4);
+        }
+
+      } catch  {
+        console.log("Failed to load user");
+      }
+    };
+
+    loadUser();
+  }, []);
 
   if (!state) return null;
 
@@ -79,7 +106,9 @@ function ZelleReview() {
 
         <div className="zelle-row">
           <span>From</span>
-          <strong>ALEX MARTINS •••• 8509</strong>
+          <strong>
+            {user ? `${user.name} •••• ${cardLast4}` : "Loading..."}
+          </strong>
         </div>
 
         <div className="zelle-row">
@@ -112,7 +141,6 @@ function ZelleReview() {
       </button>
 
       {/* PIN MODAL */}
-
       {showPinModal && (
 
         <div className="pin-overlay">
@@ -168,9 +196,7 @@ function ZelleReview() {
       )}
 
     </div>
-
   );
-
 }
 
 export default ZelleReview;

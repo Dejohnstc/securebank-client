@@ -1,10 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import api from "../api/api";
 import "./Success.css";
 
 function Success(){
 
 const navigate = useNavigate();
 const location = useLocation();
+
+const [user, setUser] = useState(null); // 🔥 NEW
+const [cardLast4, setCardLast4] = useState("****"); // 🔥 NEW
 
 const data = location.state || {};
 
@@ -13,6 +18,28 @@ const amount = data.amount || 0;
 const reference = data.reference || "TRX000000";
 
 const today = new Date().toLocaleDateString();
+
+/* 🔥 LOAD USER + CARD */
+useEffect(() => {
+  const loadUser = async () => {
+    try {
+      const res = await api.get("/api/user/profile");
+      setUser(res.data);
+
+      const stored = localStorage.getItem(`card_${res.data._id}`);
+
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setCardLast4(parsed.number.slice(-4));
+      }
+
+    } catch  {
+      console.log("User load failed");
+    }
+  };
+
+  loadUser();
+}, []);
 
 return(
 
@@ -40,12 +67,14 @@ return(
 
 <div className="receipt-row">
 <span>Wire to</span>
-<strong>{name} (...0304)</strong>
+<strong>{name} (...{String(name).slice(-4)})</strong>
 </div>
 
 <div className="receipt-row">
 <span>Wire from</span>
-<strong>TOTAL CHECKING (...2281)</strong>
+<strong>
+TOTAL CHECKING (...{cardLast4})
+</strong>
 </div>
 
 <div className="receipt-row">
@@ -62,7 +91,7 @@ return(
 
 <div className="receipt-row">
 <span>Sender</span>
-<strong>ALEX MARTINS</strong>
+<strong>{user ? user.name : "Loading..."}</strong>
 </div>
 
 <div className="receipt-row">
@@ -129,7 +158,8 @@ Your account activity will show separate charges for wire amount and wire transf
 </p>
 
 </div>
-{/* 🔥 BUTTONS OUTSIDE PRINT AREA */}
+
+{/* 🔥 BUTTONS */}
 <div className="receipt-buttons no-print">
 
 <button onClick={()=>window.print()}>
