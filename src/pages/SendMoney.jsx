@@ -161,6 +161,7 @@ function SendMoney() {
       [name]: value,
     });
   };
+  
 
   /* 🔥 AMOUNT */
   const handleAmountChange = (e) => {
@@ -323,7 +324,7 @@ function SendMoney() {
   <>
     <input
       name="swiftCode"
-      placeholder="SWIFT Code (e.g SBIUS6SXXX)"
+      placeholder="SWIFT Code"
       value={formData.swiftCode}
       onChange={handleChange}
       className={errors.swiftCode ? "input-error" : ""}
