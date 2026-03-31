@@ -7,93 +7,89 @@ function Register(){
 
 const navigate = useNavigate();
 
+/* STEP CONTROL */
+const [step,setStep] = useState(1);
+
 const [form,setForm] = useState({
-  name:"",
-  email:"",
-  password:"",
-  phone:"",
-  address:"",
-  city:"",
-  state:"",
-  country:"",
-  zip:""
+name:"",
+email:"",
+password:"",
+phone:"",
+address:"",
+city:"",
+state:"",
+country:"",
+zip:""
 });
 
 const [loading,setLoading] = useState(false);
 const [error,setError] = useState("");
 
-/* 🔥 HANDLE CHANGE */
+/* HANDLE INPUT */
 const handleChange = (e)=>{
-  const {name,value} = e.target;
+const {name,value} = e.target;
 
-  setForm({
-    ...form,
-    [name]: value
-  });
+setForm({
+...form,
+[name]:value
+});
 };
 
-/* 🔥 VALIDATION */
-const validate = ()=>{
+/* VALIDATION */
+const validateStep = ()=>{
 
-  if(!form.name || !form.email || !form.password){
-    return "Name, email and password are required";
-  }
+if(step === 1){
+if(!form.name || !form.email || !form.password){
+return "Fill all required fields";
+}
+}
 
-  if(form.password.length < 6){
-    return "Password must be at least 6 characters";
-  }
+if(step === 2){
+if(!form.phone || !form.address || !form.city){
+return "Complete address details";
+}
+}
 
-  if(form.phone && form.phone.length < 7){
-    return "Invalid phone number";
-  }
-
-  return null;
+return null;
 };
 
-/* 🔥 REGISTER */
-const handleRegister = async (e)=>{
+/* NEXT STEP */
+const nextStep = ()=>{
+const err = validateStep();
+if(err){
+setError(err);
+return;
+}
+setError("");
+setStep(step+1);
+};
 
-  e.preventDefault();
+/* PREVIOUS */
+const prevStep = ()=> setStep(step-1);
 
-  const validationError = validate();
+/* SUBMIT */
+const handleRegister = async ()=>{
 
-  if(validationError){
-    setError(validationError);
-    return;
-  }
+try{
 
-  try{
+setLoading(true);
+setError("");
 
-    setLoading(true);
-    setError("");
+await api.post("/api/auth/register",form);
 
-    await api.post("/api/auth/register",{
-      name: form.name,
-      email: form.email,
-      password: form.password,
+alert("Account created successfully");
 
-      // 🔥 EXTRA DATA (SAFE FOR NOW)
-      phone: form.phone,
-      address: form.address,
-      city: form.city,
-      state: form.state,
-      country: form.country,
-      zip: form.zip
-    });
+navigate("/");
 
-    alert("Account created successfully");
+}catch(err){
 
-    navigate("/");
+setError(err.response?.data?.message || "Registration failed");
 
-  }catch(err){
+}finally{
 
-    setError(err.response?.data?.message || "Registration failed");
+setLoading(false);
 
-  }finally{
-
-    setLoading(false);
-
-  }
+}
 
 };
 
@@ -105,105 +101,102 @@ return(
 
 <h2>Create SecureBank Account</h2>
 
-<form onSubmit={handleRegister}>
+{/* 🔥 PROGRESS BAR */}
+<div className="progress-container">
+  <div
+    className="progress-bar"
+    style={{ width: `${(step / 3) * 100}%` }}
+  ></div>
+</div>
 
-{/* NAME */}
+{/* 🔥 STEP INDICATOR */}
+<div style={{marginBottom:"15px",fontSize:"13px",color:"#666"}}>
+Step {step} of 3
+</div>
+
+{/* 🔥 ANIMATED STEP CONTAINER */}
+<div className="step-container">
+
+{/* STEP 1 */}
+{step === 1 && (
+<div className="step fade">
+
 <label>Full Name</label>
-<input
-type="text"
-name="name"
-placeholder="Enter your full name"
-value={form.name}
-onChange={handleChange}
-/>
+<input name="name" value={form.name} onChange={handleChange}/>
 
-{/* EMAIL */}
 <label>Email</label>
-<input
-type="email"
-name="email"
-placeholder="Enter your email"
-value={form.email}
-onChange={handleChange}
-/>
+<input name="email" value={form.email} onChange={handleChange}/>
 
-{/* PASSWORD */}
 <label>Password</label>
-<input
-type="password"
-name="password"
-placeholder="Create password"
-value={form.password}
-onChange={handleChange}
-/>
+<input type="password" name="password" value={form.password} onChange={handleChange}/>
 
-{/* PHONE */}
-<label>Phone Number</label>
-<input
-type="tel"
-name="phone"
-placeholder="+1 234 567 890"
-value={form.phone}
-onChange={handleChange}
-/>
+</div>
+)}
 
-{/* ADDRESS */}
+{/* STEP 2 */}
+{step === 2 && (
+<div className="step fade">
+
+<label>Phone</label>
+<input name="phone" value={form.phone} onChange={handleChange}/>
+
 <label>Address</label>
-<input
-type="text"
-name="address"
-placeholder="Street address"
-value={form.address}
-onChange={handleChange}
-/>
+<input name="address" value={form.address} onChange={handleChange}/>
 
-{/* CITY */}
 <label>City</label>
-<input
-type="text"
-name="city"
-placeholder="City"
-value={form.city}
-onChange={handleChange}
-/>
+<input name="city" value={form.city} onChange={handleChange}/>
 
-{/* STATE */}
 <label>State</label>
-<input
-type="text"
-name="state"
-placeholder="State"
-value={form.state}
-onChange={handleChange}
-/>
+<input name="state" value={form.state} onChange={handleChange}/>
 
-{/* COUNTRY */}
 <label>Country</label>
-<input
-type="text"
-name="country"
-placeholder="Country"
-value={form.country}
-onChange={handleChange}
-/>
+<input name="country" value={form.country} onChange={handleChange}/>
 
-{/* ZIP */}
-<label>ZIP / Postal Code</label>
-<input
-type="text"
-name="zip"
-placeholder="ZIP code"
-value={form.zip}
-onChange={handleChange}
-/>
+<label>ZIP</label>
+<input name="zip" value={form.zip} onChange={handleChange}/>
 
+</div>
+)}
+
+{/* STEP 3 */}
+{step === 3 && (
+<div className="step fade">
+
+<h4>Review Details</h4>
+
+<p><strong>Name:</strong> {form.name}</p>
+<p><strong>Email:</strong> {form.email}</p>
+<p><strong>Phone:</strong> {form.phone}</p>
+<p><strong>Address:</strong> {form.address}, {form.city}</p>
+
+</div>
+)}
+
+</div>
+
+{/* ERROR */}
 {error && <div className="register-error">{error}</div>}
 
-<button className="register-btn" disabled={loading}>
+{/* BUTTONS */}
+<div style={{display:"flex",gap:"10px",marginTop:"20px"}}>
+
+{step > 1 && (
+<button onClick={prevStep} className="register-btn">
+Back
+</button>
+)}
+
+{step < 3 ? (
+<button onClick={nextStep} className="register-btn">
+Next
+</button>
+) : (
+<button onClick={handleRegister} className="register-btn" disabled={loading}>
 {loading ? "Creating..." : "Create Account"}
 </button>
+)}
 
-</form>
+</div>
 
 <p className="register-back">
 Already have an account?

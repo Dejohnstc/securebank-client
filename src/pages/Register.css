@@ -120,3 +120,49 @@
   }
 
 }
+.register-card h4{
+margin-bottom:10px;
+}
+
+/* 🔥 PROGRESS BAR */
+.progress-container{
+  width:100%;
+  height:6px;
+  background:#e5e7eb;
+  border-radius:6px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,#0a3d62,#3b82f6);
+  transition:width 0.3s ease;
+}
+
+.step-text{
+  font-size:13px;
+  color:#666;
+  margin-bottom:15px;
+}
+
+/* 🔥 STEP ANIMATION */
+.step-container{
+  position:relative;
+}
+
+.step{
+  animation:fadeSlide 0.35s ease;
+}
+
+/* 🔥 ANIMATION */
+@keyframes fadeSlide{
+  from{
+    opacity:0;
+    transform:translateX(10px);
+  }
+  to{
+    opacity:1;
+    transform:translateX(0);
+  }
+}
