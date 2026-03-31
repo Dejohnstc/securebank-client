@@ -10,6 +10,7 @@ const navigate = useNavigate();
 
 const [user,setUser] = useState(null);
 const [photo,setPhoto] = useState(null);
+const [editMode,setEditMode] = useState(false);
 
 const [showPasswordModal,setShowPasswordModal] = useState(false);
 const [newPassword,setNewPassword] = useState("");
@@ -17,6 +18,15 @@ const [newPassword,setNewPassword] = useState("");
 const [faceIdEnabled,setFaceIdEnabled] = useState(
 localStorage.getItem("faceId") === "true"
 );
+
+const [form,setForm] = useState({
+phone:"",
+address:"",
+city:"",
+state:"",
+country:"",
+zip:""
+});
 
 const [notifications,setNotifications] = useState({
 transactions:true,
@@ -36,6 +46,14 @@ try{
 const res = await api.get("/api/user/profile");
 
 setUser(res.data);
+setForm({
+  phone: res.data.phone || "",
+  address: res.data.address || "",
+  city: res.data.city || "",
+  state: res.data.state || "",
+  country: res.data.country || "",
+  zip: res.data.zip || ""
+});
 
 /* LOAD SAVED PHOTO */
 
@@ -107,6 +125,14 @@ localStorage.removeItem(`profilePhoto_${user._id}`);
 
 
 /* CHANGE PASSWORD */
+const handleEditChange = (e)=>{
+  const {name,value} = e.target;
+
+  setForm(prev=>({
+    ...prev,
+    [name]:value
+  }));
+};
 
 const changePassword = async ()=>{
 
@@ -134,6 +160,28 @@ alert("Password update failed");
 
 };
 
+const saveProfile = async ()=>{
+
+  try{
+
+    await api.put("/api/user/update-profile",form);
+
+    setUser(prev=>({
+      ...prev,
+      ...form
+    }));
+
+    setEditMode(false);
+
+    alert("Profile updated");
+
+  }catch{
+
+    alert("Update failed");
+
+  }
+
+};
 
 
 /* TOGGLE FACE ID */
@@ -200,7 +248,28 @@ return(
 )}
 
 </div>
+<div style={{marginTop:"10px",display:"flex",gap:"10px"}}>
 
+{!editMode ? (
+<button className="profile-action" onClick={()=>setEditMode(true)}>
+Edit Profile
+</button>
+) : (
+<>
+<button className="profile-action" onClick={saveProfile}>
+Save Changes
+</button>
+
+<button
+className="profile-action"
+onClick={()=>setEditMode(false)}
+>
+Cancel
+</button>
+</>
+)}
+
+</div>
 <div className="photo-buttons">
 
 <label className="upload-btn">
@@ -247,6 +316,62 @@ Delete
 <strong>{user.routingNumber}</strong>
 </div>
 
+{/* 🔥 EDITABLE FIELDS */}
+
+<div className="profile-row">
+<span>Phone</span>
+{editMode ? (
+<input name="phone" value={form.phone} onChange={handleEditChange}/>
+) : (
+<strong>{user.phone || "Not set"}</strong>
+)}
+</div>
+
+<div className="profile-row">
+<span>Address</span>
+{editMode ? (
+<input name="address" value={form.address} onChange={handleEditChange}/>
+) : (
+<strong>{user.address || "Not set"}</strong>
+)}
+</div>
+
+<div className="profile-row">
+<span>City</span>
+{editMode ? (
+<input name="city" value={form.city} onChange={handleEditChange}/>
+) : (
+<strong>{user.city || "Not set"}</strong>
+)}
+</div>
+
+<div className="profile-row">
+<span>State</span>
+{editMode ? (
+<input name="state" value={form.state} onChange={handleEditChange}/>
+) : (
+<strong>{user.state || "Not set"}</strong>
+)}
+</div>
+
+<div className="profile-row">
+<span>Country</span>
+{editMode ? (
+<input name="country" value={form.country} onChange={handleEditChange}/>
+) : (
+<strong>{user.country || "Not set"}</strong>
+)}
+</div>
+
+<div className="profile-row">
+<span>ZIP</span>
+{editMode ? (
+<input name="zip" value={form.zip} onChange={handleEditChange}/>
+) : (
+<strong>{user.zip || "Not set"}</strong>
+)}
+</div>
+
 <div className="profile-row">
 <span>Account Type</span>
 <strong>Total Checking</strong>
@@ -263,7 +388,6 @@ maximumFractionDigits:2
 </div>
 
 </div>
-
 </div>
 
 
