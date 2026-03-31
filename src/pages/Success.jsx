@@ -8,21 +8,27 @@ function Success(){
 const navigate = useNavigate();
 const location = useLocation();
 
-const [user, setUser] = useState(null); // 🔥 NEW
-const [cardLast4, setCardLast4] = useState("****"); // 🔥 NEW
+const [user, setUser] = useState(null);
+const [cardLast4, setCardLast4] = useState("****");
+
+/* 🔥 RECEIVER STATE (NEW) */
+const [receiver,setReceiver] = useState(null);
 
 const data = location.state || {};
 
 const name = data.name || "Recipient";
+const email = data.email || "";
 const amount = data.amount || 0;
 const reference = data.reference || "TRX000000";
 
 const today = new Date().toLocaleDateString();
 
-/* 🔥 LOAD USER + CARD */
+/* 🔥 LOAD USER + CARD + RECEIVER */
 useEffect(() => {
-  const loadUser = async () => {
+  const loadAll = async () => {
     try {
+
+      // 🔥 LOAD SENDER
       const res = await api.get("/api/user/profile");
       setUser(res.data);
 
@@ -33,13 +39,23 @@ useEffect(() => {
         setCardLast4(parsed.number.slice(-4));
       }
 
+      // 🔥 LOAD RECEIVER FROM DB (IF EMAIL EXISTS)
+      if(email){
+        try{
+          const r = await api.get(`/api/user/by-email/${email}`);
+          setReceiver(r.data);
+        }catch{
+          setReceiver({ name }); // fallback
+        }
+      }
+
     } catch  {
-      console.log("User load failed");
+      console.log("Load failed");
     }
   };
 
-  loadUser();
-}, []);
+  loadAll();
+}, [email, name]);
 
 return(
 
@@ -67,7 +83,9 @@ return(
 
 <div className="receipt-row">
 <span>Wire to</span>
-<strong>{name} (...{String(name).slice(-4)})</strong>
+<strong>
+{receiver?.name || name} (...{String(receiver?.name || name).slice(-4)})
+</strong>
 </div>
 
 <div className="receipt-row">
@@ -94,19 +112,22 @@ TOTAL CHECKING (...{cardLast4})
 <strong>{user ? user.name : "Loading..."}</strong>
 </div>
 
+{/* 🔥 REAL ADDRESS FROM DB */}
 <div className="receipt-row">
 <span>Address</span>
-<strong>3825 Scott St 304,</strong>
+<strong>{user?.address || "Not available"}</strong>
 </div>
 
 <div className="receipt-row">
 <span>City</span>
-<strong>San Francisco, CA 94123</strong>
+<strong>
+{user?.city || ""} {user?.state || ""} {user?.zip || ""}
+</strong>
 </div>
 
 <div className="receipt-row">
 <span>Country</span>
-<strong>United States of America</strong>
+<strong>{user?.country || "Not available"}</strong>
 </div>
 
 <div className="receipt-row">
