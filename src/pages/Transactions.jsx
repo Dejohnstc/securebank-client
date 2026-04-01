@@ -206,9 +206,9 @@ function Transactions() {
           </h3>
 
           <p>
-            In: ₦{totalIn.toLocaleString(undefined,{minimumFractionDigits:2})}
+            In: ${totalIn.toLocaleString(undefined,{minimumFractionDigits:2})}
             &nbsp;&nbsp;
-            Out: ₦{totalOut.toLocaleString(undefined,{minimumFractionDigits:2})}
+            Out: ${totalOut.toLocaleString(undefined,{minimumFractionDigits:2})}
           </p>
         </div>
 
