@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/api"; // 🔥 FIXED
 import "./AdminLimits.css";
 
 function AdminLimits() {
 
-  const token = localStorage.getItem("token");
-
-  const [dailyLimit, setDailyLimit] = useState("");
-  const [singleLimit, setSingleLimit] = useState("");
+  const [dailyLimit, setDailyLimit] = useState(0);
+  const [singleLimit, setSingleLimit] = useState(0);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -16,15 +14,10 @@ function AdminLimits() {
     try {
       setLoading(true);
 
-      const res = await axios.get(
-        "https://securebank-api-ixis.onrender.com/api/admin/settings/limits",
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const res = await api.get("/api/admin/settings/limits");
 
-      setDailyLimit(res.data.dailyLimit);
-      setSingleLimit(res.data.singleTransferLimit);
+      setDailyLimit(res.data.dailyLimit || 0);
+      setSingleLimit(res.data.singleTransferLimit || 0);
 
     } catch (err) {
       console.error(err);
@@ -40,19 +33,23 @@ function AdminLimits() {
 
   // ✅ SAVE LIMITS
   const handleSave = async () => {
+
+    // 🔥 VALIDATION
+    if (!dailyLimit || dailyLimit <= 0) {
+      return alert("Invalid daily limit");
+    }
+
+    if (!singleLimit || singleLimit <= 0) {
+      return alert("Invalid single transfer limit");
+    }
+
     try {
       setSaving(true);
 
-      await axios.put(
-        "https://securebank-api-ixis.onrender.com/api/admin/settings/limits",
-        {
-          dailyLimit,
-          singleTransferLimit: singleLimit
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await api.put("/api/admin/settings/limits", {
+        dailyLimit: Number(dailyLimit),
+        singleTransferLimit: Number(singleLimit)
+      });
 
       alert("Limits updated successfully");
 
@@ -79,7 +76,7 @@ function AdminLimits() {
           <input
             type="number"
             value={dailyLimit}
-            onChange={(e) => setDailyLimit(e.target.value)}
+            onChange={(e) => setDailyLimit(Number(e.target.value))}
           />
         </div>
 
@@ -88,7 +85,7 @@ function AdminLimits() {
           <input
             type="number"
             value={singleLimit}
-            onChange={(e) => setSingleLimit(e.target.value)}
+            onChange={(e) => setSingleLimit(Number(e.target.value))}
           />
         </div>
 
