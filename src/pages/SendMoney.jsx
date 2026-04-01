@@ -356,9 +356,7 @@ function SendMoney() {
           {errors.bankName && (
             <p className="error-text">{errors.bankName}</p>
           )}
-        </div>
-
-        {transferType === "wire" && (
+            {transferType === "wire" && (
           <>
             <input
               name="swiftCode"
@@ -380,6 +378,9 @@ function SendMoney() {
             />
           </>
         )}
+        </div>
+
+      
 
         <div className="section">
           <h3>Amount</h3>
