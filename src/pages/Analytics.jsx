@@ -115,17 +115,17 @@ function Analytics() {
 
         <div className="card income">
           <p>Income</p>
-          <h2>₦{income.toLocaleString()}</h2>
+          <h2>${income.toLocaleString()}</h2>
         </div>
 
         <div className="card expense">
           <p>Expenses</p>
-          <h2>₦{expense.toLocaleString()}</h2>
+          <h2>${expense.toLocaleString()}</h2>
         </div>
 
         <div className="card balance">
           <p>Net Balance</p>
-          <h2>₦{balance.toLocaleString()}</h2>
+          <h2>${balance.toLocaleString()}</h2>
         </div>
 
       </div>
