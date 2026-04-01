@@ -457,3 +457,11 @@ margin-top:80px;
 .cch {
   font-size: 300;
 }
+.cch {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #ccc;
+  border-radius: 50%;
+  margin: 0 6px;
+}

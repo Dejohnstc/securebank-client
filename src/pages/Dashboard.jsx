@@ -142,9 +142,14 @@ function Dashboard() {
       {/* ACCOUNT CARD */}
       <div className="account-card">
         <div className="account-header">
-          <span className="fonter">SECUREBANK <p className="cch"></p>CHECKING<p/></span>
-          <span>•••• 8509</span>
-        </div>
+  <span className="fonter">
+    SECUREBANK <span className="cch"></span> CHECKING
+  </span>
+
+  <span>
+    •••• {user.accountNumber?.slice(-4)}
+  </span>
+</div>
 
         <div className="balance">
           <h3 className="balance-row">

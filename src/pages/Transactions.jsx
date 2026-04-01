@@ -68,8 +68,8 @@ function Transactions() {
       tx.sender?.name === user.name;
 
     const otherName = isSender
-      ? tx.receiver?.name || "Unknown"
-      : tx.sender?.name || "Unknown";
+      ? tx.receiver?.name || "Failed"
+      : tx.sender?.name || "Failed";
 
     if(category === "sent" && !isSender) return false;
     if(category === "received" && isSender) return false;
@@ -243,8 +243,8 @@ function Transactions() {
               tx.sender?.name === user.name;
 
             const displayName = isSender
-              ? tx.receiver?.name || "Unknown"
-              : tx.sender?.name || "Unknown";
+              ? tx.receiver?.name || "Failed"
+              : tx.sender?.name || "Failed";
 
             return(
 
