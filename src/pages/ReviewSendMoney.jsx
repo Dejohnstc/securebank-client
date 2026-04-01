@@ -1,16 +1,30 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import api from "../api/api"; // 🔥 FIXED
 import "./ReviewSendMoney.css";
 
 function ReviewSendMoney() {
   const navigate = useNavigate();
   const location = useLocation();
-  const token = localStorage.getItem("token");
 
   const { name, email, amount } = location.state || {};
 
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null); // 🔥 NEW
+
+  /* 🔥 LOAD CURRENT USER */
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const res = await api.get("/api/user/profile");
+        setUser(res.data);
+      } catch {
+        console.log("User load failed");
+      }
+    };
+
+    loadUser();
+  }, []);
 
   const handleConfirm = async () => {
     if (!email || !amount) {
@@ -21,19 +35,13 @@ function ReviewSendMoney() {
     try {
       setLoading(true);
 
-      await axios.post(
-        "http://127.0.0.1:5000/api/transactions/transfer",
-        {
-          receiverEmail: email,
-          amount: Number(amount)
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      await api.post("/api/transactions/transfer", {
+        receiverEmail: email,
+        amount: Number(amount)
+      });
 
       navigate("/success", {
-        state: { name, amount }
+        state: { name, email, amount } // 🔥 IMPORTANT FIX
       });
 
     } catch (error) {
@@ -51,6 +59,7 @@ function ReviewSendMoney() {
       </div>
 
       <div className="review-card">
+
         <div className="review-recipient">
           <div className="zelle-avatar">Z</div>
           <div>
@@ -63,10 +72,14 @@ function ReviewSendMoney() {
           ${Number(amount).toLocaleString()}
         </div>
 
+        {/* 🔥 FIXED SENDER */}
         <div className="review-info">
           <p>From</p>
-          <strong>ALEX MARTINS</strong>
+          <strong>
+            {user ? user.name : "Loading..."}
+          </strong>
         </div>
+
       </div>
 
       <button
