@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
-  const [registrationEnabled, setRegistrationEnabled] = useState(true);
+  // const [registrationEnabled, setRegistrationEnabled] = useState(true);
 
   const token = localStorage.getItem('token');
 
@@ -131,12 +131,12 @@ export default function AdminDashboard() {
             Limits
           </button>
 
-          <button
+          {/* <button
             className={registrationEnabled ? "active" : "off"}
             onClick={() => setRegistrationEnabled(!registrationEnabled)}
           >
             {registrationEnabled ? "Registration ON" : "Registration OFF"}
-          </button>
+          </button> */}
         </div>
 
       </div>
