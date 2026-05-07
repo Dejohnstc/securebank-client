@@ -26,20 +26,43 @@ function App() {
 
   useEffect(() => {
 
-    const script = document.createElement("script");
+  const script = document.createElement("script");
 
-    script.async = true;
+  script.async = true;
 
-    script.src =
-      "https://embed.tawk.to/69fcabe83f4ef01c34c2db47/1jo1fv3re";
+  script.src =
+    "https://embed.tawk.to/69fcabe83f4ef01c34c2db47/1jo1fv3re";
 
-    script.charset = "UTF-8";
+  script.charset = "UTF-8";
 
-    script.setAttribute("crossorigin", "*");
+  script.setAttribute("crossorigin", "*");
 
-    document.body.appendChild(script);
+  script.onload = () => {
 
-  }, []);
+    if (window.Tawk_API) {
+
+      window.Tawk_API.customStyle = {
+        visibility: {
+          desktop: {
+            position: "br",
+            xOffset: 20,
+            yOffset: 90
+          },
+          mobile: {
+            position: "br",
+            xOffset: 20,
+            yOffset: 90
+          }
+        }
+      };
+
+    }
+
+  };
+
+  document.body.appendChild(script);
+
+}, []);
 
   return (
 
