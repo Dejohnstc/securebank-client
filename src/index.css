@@ -40,9 +40,9 @@ textarea {
 /* MOVE TAWK CHAT ABOVE BOTTOM NAVBAR */
 
 iframe[title="chat widget"]{
-bottom:90px !important;
+bottom:50px !important;
 }
 
 #tawkchat-container{
-bottom:90px !important;
+bottom:50px !important;
 }
