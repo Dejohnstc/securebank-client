@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Cards from "./pages/Cards";
 
+import Cards from "./pages/Cards";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import SendMoney from "./pages/SendMoney";
@@ -22,19 +23,40 @@ import TransactionDetails from "./pages/TransactionDetails";
 import Analytics from "./pages/Analytics";
 
 function App() {
-  return (
-    
-    <Router>
 
-      
+  useEffect(() => {
+
+    const script = document.createElement("script");
+
+    script.async = true;
+
+    script.src =
+      "https://embed.tawk.to/69fcabe83f4ef01c34c2db47/1jo1fv3re";
+
+    script.charset = "UTF-8";
+
+    script.setAttribute("crossorigin", "*");
+
+    document.body.appendChild(script);
+
+  }, []);
+
+  return (
+
+    <Router>
 
       <Routes>
 
         {/* Public Routes */}
+
         <Route path="/" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
 
+
+
         {/* Dashboard */}
+
         <Route
           path="/dashboard"
           element={
@@ -44,7 +66,10 @@ function App() {
           }
         />
 
+
+
         {/* Wire Transfer */}
+
         <Route
           path="/send-money"
           element={
@@ -63,7 +88,10 @@ function App() {
           }
         />
 
+
+
         {/* Zelle */}
+
         <Route
           path="/zelle"
           element={
@@ -91,7 +119,10 @@ function App() {
           }
         />
 
+
+
         {/* Success */}
+
         <Route
           path="/success"
           element={
@@ -100,14 +131,38 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+
+
+        {/* Admin */}
+
         <Route path="/admin" element={<AdminDashboard />} />
+
+        <Route path="/admin/limits" element={<AdminLimits />} />
+
+        <Route path="/analytics" element={<Analytics />} />
+
+
+
+        {/* Transfer Status */}
+
         <Route path="/transfer-success" element={<TransferSuccess />} />
-<Route path="/transfer-failed" element={<TransferFailed />} />
-<Route path="/admin/limits" element={<AdminLimits />} />
-<Route path="/transaction-details" element={<TransactionDetails />} />
-<Route path="/analytics" element={<Analytics />} />
+
+        <Route path="/transfer-failed" element={<TransferFailed />} />
+
+
+
+        {/* Transaction Details */}
+
+        <Route
+          path="/transaction-details"
+          element={<TransactionDetails />}
+        />
+
+
 
         {/* Transactions */}
+
         <Route
           path="/transactions"
           element={
@@ -117,7 +172,10 @@ function App() {
           }
         />
 
+
+
         {/* Cards */}
+
         <Route
           path="/cards"
           element={
@@ -127,7 +185,10 @@ function App() {
           }
         />
 
+
+
         {/* Pay Bills */}
+
         <Route
           path="/pay-bills"
           element={
@@ -136,16 +197,24 @@ function App() {
             </ProtectedRoute>
           }
         />
-<Route
-  path="/profile"
-  element={
-    <ProtectedRoute>
-      <Profile />
-    </ProtectedRoute>
-  }
-/>
+
+
+
+        {/* Profile */}
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
+
     </Router>
+
   );
 }
 
